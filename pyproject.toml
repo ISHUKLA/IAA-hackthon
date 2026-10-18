@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools==80.9.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "iaa-hackathon"
+version = "0.0.1"
+description = "IAA Part 1 scaffold and prediction-contract workflow"
+requires-python = ">=3.11,<3.14"
+dependencies = []
+
+[project.optional-dependencies]
+inventory = ["pyarrow>=18"]
+step1 = [
+  "numpy>=2,<3",
+  "pandas>=2.2,<3",
+  "pyarrow>=18",
+  "scikit-learn>=1.6,<2",
+  "jsonschema>=4,<5",
+]
+dev = ["pytest>=8,<10"]
+
+[project.scripts]
+iaa = "iaa_hackathon.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"

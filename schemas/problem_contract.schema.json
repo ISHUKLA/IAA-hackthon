@@ -1,0 +1,212 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/iaa/problem_contract.schema.json",
+  "title": "IAA Part 1 problem contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "contract_name",
+    "approval",
+    "prediction_grain",
+    "claim_allocation",
+    "target",
+    "exposure",
+    "metric",
+    "submission",
+    "examples",
+    "downstream_scope_exclusions"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "contract_name": {"type": "string", "minLength": 1},
+    "approval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["automated_validation", "ai_review", "human_actuarial_review"],
+      "properties": {
+        "automated_validation": {"enum": ["pending", "passed", "failed"]},
+        "ai_review": {"enum": ["pending", "complete"]},
+        "human_actuarial_review": {"const": "pending"}
+      }
+    },
+    "prediction_grain": {
+      "$ref": "#/$defs/verifiedPredictionGrain"
+    },
+    "claim_allocation": {
+      "$ref": "#/$defs/claimAllocation"
+    },
+    "target": {
+      "$ref": "#/$defs/target"
+    },
+    "exposure": {
+      "$ref": "#/$defs/exposure"
+    },
+    "metric": {
+      "$ref": "#/$defs/metric"
+    },
+    "submission": {
+      "$ref": "#/$defs/submission"
+    },
+    "examples": {
+      "type": "object",
+      "required": ["loss_date_allocation", "expectation", "exposure", "aggregation", "d2"]
+    },
+    "downstream_scope_exclusions": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    }
+  },
+  "$defs": {
+    "status": {
+      "enum": ["verified", "proposed", "unresolved"]
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "verifiedPredictionGrain": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "unit", "key", "output_quantity", "sources"],
+      "properties": {
+        "status": {"const": "verified"},
+        "unit": {"const": "one covered policy-period row"},
+        "key": {"const": "row_id"},
+        "output_quantity": {"type": "string", "minLength": 1},
+        "sources": {"$ref": "#/$defs/sources"}
+      }
+    },
+    "claimAllocation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "match_fields", "line_field_source", "date_field", "coverage_start_field", "coverage_end_field", "boundaries", "excluded_status_values", "report_or_payment_date_changes_allocation", "outside_supplied_coverage_action", "source"],
+      "properties": {
+        "status": {"const": "verified"},
+        "match_fields": {"const": ["line", "policy_id"]},
+        "line_field_source": {"type": "string", "minLength": 1},
+        "date_field": {"const": "loss_date"},
+        "coverage_start_field": {"const": "period_start"},
+        "coverage_end_field": {"const": "period_end"},
+        "boundaries": {"const": "inclusive"},
+        "excluded_status_values": {
+          "type": "array",
+          "contains": {"const": "repudiated"},
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string"}
+        },
+        "report_or_payment_date_changes_allocation": {"const": false},
+        "outside_supplied_coverage_action": {"type": "string", "minLength": 1},
+        "source": {"type": "string", "minLength": 1}
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "quantity", "currency", "basis", "is_expectation_not_guaranteed_outcome", "frequency_severity_identity", "actual_ultimate_labels_supplied", "components", "double_subtract_excess", "financial_field_interpretation", "sources"],
+      "properties": {
+        "status": {"const": "verified"},
+        "quantity": {"const": "expected_total_net_ultimate_claim_cost"},
+        "currency": {"type": "string", "minLength": 1},
+        "basis": {"type": "string", "minLength": 1},
+        "is_expectation_not_guaranteed_outcome": {"const": true},
+        "frequency_severity_identity": {"type": "string", "minLength": 1},
+        "actual_ultimate_labels_supplied": {"const": false},
+        "components": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["observed_net_incurred", "unreported_losses", "reported_claim_development", "future_recoveries", "trend_to_2025_cost_level"],
+          "properties": {
+            "observed_net_incurred": {"type": "string"},
+            "unreported_losses": {"type": "string"},
+            "reported_claim_development": {"type": "string"},
+            "future_recoveries": {"type": "string"},
+            "trend_to_2025_cost_level": {"type": "string"}
+          }
+        },
+        "double_subtract_excess": {"const": false},
+        "financial_field_interpretation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status", "value", "action"],
+          "properties": {
+            "status": {"const": "unresolved"},
+            "value": {"type": "null"},
+            "action": {"type": "string", "minLength": 1}
+          }
+        },
+        "sources": {"$ref": "#/$defs/sources"}
+      }
+    },
+    "exposure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "prediction_scale", "annual_rate_output", "apply_count", "audited_candidate_convention", "formula", "rounding_decimal_places", "correction_now", "later_action", "source"],
+      "properties": {
+        "status": {"const": "proposed"},
+        "prediction_scale": {"const": "row_period_cost"},
+        "annual_rate_output": {"const": false},
+        "apply_count": {"const": 1},
+        "audited_candidate_convention": {"const": "inclusive_ACT_365"},
+        "formula": {"type": "string", "minLength": 1},
+        "rounding_decimal_places": {"type": "integer", "minimum": 0},
+        "correction_now": {"const": false},
+        "later_action": {"type": "string", "minLength": 1},
+        "source": {"type": "string", "minLength": 1}
+      }
+    },
+    "metric": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "name", "power", "direction", "standard_semantics", "null_prediction", "null_interpretation", "practical_baseline", "pooling", "sample_weighting", "source"],
+      "properties": {
+        "status": {"const": "verified"},
+        "name": {"const": "Tweedie D² score"},
+        "power": {"const": 1.5},
+        "direction": {"const": "higher_is_better"},
+        "standard_semantics": {"type": "string", "minLength": 1},
+        "null_prediction": {"type": "string", "minLength": 1},
+        "null_interpretation": {"type": "string", "minLength": 1},
+        "practical_baseline": {"type": "string", "minLength": 1},
+        "pooling": {"$ref": "#/$defs/unresolvedChoice"},
+        "sample_weighting": {"$ref": "#/$defs/unresolvedChoice"},
+        "source": {"type": "string", "minLength": 1}
+      }
+    },
+    "unresolvedChoice": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "value", "provisional_local_choice"],
+      "properties": {
+        "status": {"const": "unresolved"},
+        "value": {"type": "null"},
+        "provisional_local_choice": {"type": "string", "minLength": 1}
+      }
+    },
+    "submission": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "format", "columns", "row_count", "identifier_rule", "prediction_type", "official_minimum", "strict_positive_local_tweedie_compatibility", "strict_positive_status", "order_requirement_status", "order_required_officially", "generation_order_convention", "source"],
+      "properties": {
+        "status": {"const": "verified"},
+        "format": {"const": "CSV"},
+        "columns": {"const": ["row_id", "prediction"]},
+        "row_count": {"const": 626639},
+        "identifier_rule": {"type": "string", "minLength": 1},
+        "prediction_type": {"const": "finite numeric"},
+        "official_minimum": {"const": 0.0},
+        "strict_positive_local_tweedie_compatibility": {"const": true},
+        "strict_positive_status": {"const": "proposed"},
+        "order_requirement_status": {"const": "unresolved"},
+        "order_required_officially": {"type": "null"},
+        "generation_order_convention": {"type": "string", "minLength": 1},
+        "source": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

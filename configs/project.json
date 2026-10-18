@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "phase": "step0_scaffold",
+  "data_dir_env": "IAA_DATA_DIR",
+  "expected_files": [
+    "addresses.parquet",
+    "claims.parquet",
+    "customers.parquet",
+    "policies_buildings.parquet",
+    "policies_contents.parquet",
+    "policies_motor.parquet",
+    "sample_submission.parquet",
+    "test_buildings.parquet",
+    "test_contents.parquet",
+    "test_motor.parquet",
+    "weather.parquet"
+  ],
+  "expected_test_rows": 626639,
+  "valuation_date": "2024-12-31",
+  "training_years": [
+    2021,
+    2022,
+    2023,
+    2024
+  ],
+  "test_year": 2025,
+  "metric_power": 1.5,
+  "metric_pooling_status": "unverified",
+  "metric_weighting_status": "unverified",
+  "human_contract_review": "pending"
+}

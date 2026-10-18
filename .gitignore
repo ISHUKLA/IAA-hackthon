@@ -1,0 +1,37 @@
+# Local inputs and generated outputs
+data/**
+!data/README.md
+outputs/**
+!outputs/README.md
+*.parquet
+*.pq
+*.arrow
+*.feather
+*.zip
+*.csv
+!tests/fixtures/synthetic/*.csv
+*.pkl
+*.pickle
+*.joblib
+
+# Machine-local settings and secrets
+.env
+.env.*
+configs/local*.json
+CLAUDE.local.md
+.claude/settings.local.json
+.claude/worktrees/
+
+# Python build and execution files
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.DS_Store

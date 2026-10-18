@@ -1,0 +1,152 @@
+{
+  "schema_version": "1.0.0",
+  "contract_name": "IAA Part 1 prediction contract",
+  "approval": {
+    "automated_validation": "passed",
+    "ai_review": "complete",
+    "human_actuarial_review": "pending"
+  },
+  "prediction_grain": {
+    "status": "verified",
+    "unit": "one covered policy-period row",
+    "key": "row_id",
+    "output_quantity": "expected total net ultimate claim cost for that row's covered period",
+    "sources": [
+      "docs/step1/source-register.md#official-requirements",
+      "docs/step1/data-readiness.md#required-fields-and-ranges"
+    ]
+  },
+  "claim_allocation": {
+    "status": "verified",
+    "match_fields": [
+      "line",
+      "policy_id"
+    ],
+    "line_field_source": "claims.line matched to the policy-table identity (motor, buildings or contents)",
+    "date_field": "loss_date",
+    "coverage_start_field": "period_start",
+    "coverage_end_field": "period_end",
+    "boundaries": "inclusive",
+    "excluded_status_values": [
+      "declined",
+      "repudiated"
+    ],
+    "report_or_payment_date_changes_allocation": false,
+    "outside_supplied_coverage_action": "quarantine; do not force onto another row",
+    "source": "docs/step1/source-register.md#official-requirements"
+  },
+  "target": {
+    "status": "verified",
+    "quantity": "expected_total_net_ultimate_claim_cost",
+    "currency": "competition fictional currency units",
+    "basis": "net of policy excess and recoveries; declined or repudiated claims excluded",
+    "is_expectation_not_guaranteed_outcome": true,
+    "frequency_severity_identity": "expected_cost = expected_claim_frequency * expected_cost_per_claim",
+    "actual_ultimate_labels_supplied": false,
+    "components": {
+      "observed_net_incurred": "observed reference at the supplied valuation date",
+      "unreported_losses": "future estimate; not supplied",
+      "reported_claim_development": "future estimate; not supplied",
+      "future_recoveries": "future estimate; not supplied",
+      "trend_to_2025_cost_level": "future assumption; not supplied"
+    },
+    "double_subtract_excess": false,
+    "financial_field_interpretation": {
+      "status": "unresolved",
+      "value": null,
+      "action": "reconcile supplied incurred, paid, recovery and excess definitions before target construction"
+    },
+    "sources": [
+      "docs/step1/source-register.md#official-requirements",
+      "docs/evidence/known-findings.md"
+    ]
+  },
+  "exposure": {
+    "status": "proposed",
+    "prediction_scale": "row_period_cost",
+    "annual_rate_output": false,
+    "apply_count": 1,
+    "audited_candidate_convention": "inclusive_ACT_365",
+    "formula": "((period_end - period_start).days + 1) / 365",
+    "rounding_decimal_places": 4,
+    "correction_now": false,
+    "later_action": "preserve raw exposure, add a reversible derived exposure and correction flag, and reconcile totals",
+    "source": "docs/evidence/known-findings.md"
+  },
+  "metric": {
+    "status": "verified",
+    "name": "Tweedie D² score",
+    "power": 1.5,
+    "direction": "higher_is_better",
+    "standard_semantics": "1 - model_mean_tweedie_deviance / null_mean_tweedie_deviance",
+    "null_prediction": "weighted or unweighted mean of y_true over the exact scoring rows, matching sample_weight",
+    "null_interpretation": "mathematical benchmark calculation only; not a feature and not an estimate from hidden test outcomes",
+    "practical_baseline": "training-only constant fitted without validation or test outcomes",
+    "pooling": {
+      "status": "unresolved",
+      "value": null,
+      "provisional_local_choice": "pool all policy-period rows"
+    },
+    "sample_weighting": {
+      "status": "unresolved",
+      "value": null,
+      "provisional_local_choice": "unweighted"
+    },
+    "source": "docs/step1/source-register.md#official-requirements"
+  },
+  "submission": {
+    "status": "verified",
+    "format": "CSV",
+    "columns": [
+      "row_id",
+      "prediction"
+    ],
+    "row_count": 626639,
+    "identifier_rule": "unique identifiers with exact combined test row_id coverage",
+    "prediction_type": "finite numeric",
+    "official_minimum": 0.0,
+    "strict_positive_local_tweedie_compatibility": true,
+    "strict_positive_status": "proposed",
+    "order_requirement_status": "unresolved",
+    "order_required_officially": null,
+    "generation_order_convention": "sample_submission row order",
+    "source": "docs/step1/source-register.md#official-requirements"
+  },
+  "examples": {
+    "loss_date_allocation": {
+      "coverage": "2025-01-01 through 2025-06-30",
+      "may_loss_reported_next_year": "included because loss_date is inside coverage",
+      "july_loss": "excluded because loss_date is outside coverage"
+    },
+    "expectation": {
+      "claim_probability": 0.1,
+      "conditional_cost": 1000.0,
+      "expected_cost": 100.0
+    },
+    "exposure": {
+      "annual_expected_cost": 200.0,
+      "exposure": 0.25,
+      "row_period_expected_cost": 50.0
+    },
+    "aggregation": {
+      "policy_count": 1000,
+      "per_policy_expected_cost": 50.0,
+      "portfolio_expected_cost": 50000.0,
+      "segment_warning": "Equal portfolio totals can conceal 10 CU versus 90 CU risk-group predictions."
+    },
+    "d2": {
+      "model_deviance": 70.0,
+      "null_deviance": 100.0,
+      "score": 0.3
+    }
+  },
+  "downstream_scope_exclusions": [
+    "data cleaning or correction",
+    "claim linkage and financial reconciliation",
+    "ultimate-label construction",
+    "maturity or recovery estimation",
+    "validation split construction",
+    "model training or tuning",
+    "competition prediction generation or upload"
+  ]
+}
