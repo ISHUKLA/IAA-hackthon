@@ -21,6 +21,23 @@ def main() -> int:
     inventory.add_argument("--config", default="configs/project.json")
     inventory.add_argument("--manifest", default="docs/evidence/expected-manifest.json")
     inventory.add_argument("--output", default="outputs/step1/data-inventory.json")
+    prepare = commands.add_parser(
+        "prepare-data", help="Build source-preserving Step 2 policy tables and evidence"
+    )
+    prepare.add_argument("--data-dir", default=None)
+    prepare.add_argument("--config", default="configs/project.json")
+    prepare.add_argument("--cleaning-config", default="configs/cleaning.json")
+    prepare.add_argument("--manifest", default="docs/evidence/expected-manifest.json")
+    prepare.add_argument("--output-dir", default="outputs/step2/prepared")
+    targets = commands.add_parser(
+        "build-targets", help="Build Step 3 linkage, observed targets and maturity diagnostics"
+    )
+    targets.add_argument("--data-dir", default=None)
+    targets.add_argument("--config", default="configs/project.json")
+    targets.add_argument("--step2-dir", default="outputs/step2/prepared")
+    targets.add_argument("--target-config", default="configs/target_construction.json")
+    targets.add_argument("--scenario-config", default="configs/reserving_scenarios.json")
+    targets.add_argument("--output-dir", default="outputs/step3/prepared")
     args = parser.parse_args()
     try:
         config = json.loads(Path(args.config).read_text())
@@ -31,6 +48,50 @@ def main() -> int:
         print(json.dumps({"status": "not_configured", "action": "Set IAA_DATA_DIR or --data-dir"}))
         return 2
     root = Path(directory).expanduser().resolve()
+    if args.command == "build-targets":
+        try:
+            from iaa_hackathon.targets_pipeline import build_targets
+
+            result = build_targets(
+                data_dir=root,
+                step2_dir=Path(args.step2_dir).resolve(),
+                output_dir=Path(args.output_dir).resolve(),
+                target_config_path=Path(args.target_config).resolve(),
+                scenario_config_path=Path(args.scenario_config).resolve(),
+                project_root=Path.cwd(),
+            )
+        except (ImportError, OSError, ValueError, KeyError) as exc:
+            print(json.dumps({"status": "error", "error": str(exc)}, indent=2))
+            return 2
+        print(json.dumps({
+            "status": result["status"],
+            "output_dir": str(Path(args.output_dir).resolve()),
+            "logical_output_digest": result["logical_output_digest"],
+            "raw_hashes_unchanged": result["raw_hashes_unchanged"],
+            "rerun_matches": result["rerun_comparison"]["matches_previous_run"],
+        }, indent=2))
+        return 0
+    if args.command == "prepare-data":
+        try:
+            from iaa_hackathon.prepare import prepare_data
+
+            result = prepare_data(
+                data_dir=root,
+                output_dir=Path(args.output_dir),
+                cleaning_config_path=Path(args.cleaning_config).resolve(),
+                reference_manifest_path=Path(args.manifest).resolve(),
+                project_root=Path.cwd(),
+            )
+        except (ImportError, OSError, ValueError, KeyError) as exc:
+            print(json.dumps({"status": "error", "error": str(exc)}, indent=2))
+            return 2
+        print(json.dumps({
+            "status": result["status"],
+            "output_dir": str(Path(args.output_dir).resolve()),
+            "logical_output_digest": result["logical_output_digest"],
+            "raw_hashes_unchanged": result["raw_hashes_unchanged"],
+        }, indent=2))
+        return 0
     if args.command == "inventory":
         try:
             from iaa_hackathon.inventory import build_inventory, write_inventory

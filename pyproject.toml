@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "iaa-hackathon"
 version = "0.0.1"
-description = "IAA Part 1 scaffold and prediction-contract workflow"
+description = "IAA prediction contract and source-preserving clean-data workflow"
 requires-python = ">=3.11,<3.14"
 dependencies = []
 
@@ -16,6 +16,18 @@ step1 = [
   "pandas>=2.2,<3",
   "pyarrow>=18",
   "scikit-learn>=1.6,<2",
+  "jsonschema>=4,<5",
+]
+step2 = [
+  "pandas>=2.2,<3",
+  "pyarrow>=18",
+  "jsonschema>=4,<5",
+]
+step3 = [
+  "numpy>=2,<3",
+  "pandas>=2.2,<3",
+  "pyarrow>=18",
+  "scipy>=1.14,<2",
   "jsonschema>=4,<5",
 ]
 dev = ["pytest>=8,<10"]

@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "config_id": "step3-reserving-scenarios-v1",
+  "financial_basis": "provisional_incurred_gross_of_recorded_recoveries",
+  "formula": "paid_to_date + case_multiplier * (incurred_to_date - paid_to_date) - recoveries - future_recovery",
+  "trend_to_2025_cost_level": {
+    "enabled": false,
+    "reason": "No explicit supported trend treatment was supplied for Step 3."
+  },
+  "scenarios": [
+    {
+      "id": "reference",
+      "case_multiplier": 1.0,
+      "future_recovery": 0.0,
+      "status": "neutral_identity_reference_not_evidence_of_adequacy"
+    },
+    {
+      "id": "reserve_release_20pct",
+      "case_multiplier": 0.8,
+      "future_recovery": 0.0,
+      "status": "illustrative_stress_not_confidence_bound"
+    },
+    {
+      "id": "reserve_strengthening_20pct",
+      "case_multiplier": 1.2,
+      "future_recovery": 0.0,
+      "status": "illustrative_stress_not_confidence_bound"
+    }
+  ],
+  "future_recovery_status": "not_identified_from_single_snapshot_set_to_zero_in_all_reference_stresses",
+  "human_review_status": "pending"
+}

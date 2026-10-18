@@ -1,0 +1,285 @@
+{
+  "schema_version": 1,
+  "config_id": "step2-cleaning-v1",
+  "status": "implemented_reversible_clean_layer_human_adoption_pending",
+  "scope": "Six policy tables only; immutable references to customers, addresses, weather and claims",
+  "data_dir_env": "IAA_DATA_DIR",
+  "source_identity": {
+    "reference_manifest": "docs/evidence/expected-manifest.json",
+    "runtime_before_manifest": "outputs/step2/preflight/before-source-manifest.json",
+    "required_file_count": 11,
+    "hash_mismatch_action": "fail and reconcile; never rewrite the reference manifest"
+  },
+  "processing": {
+    "unit": "one source policy table at a time",
+    "order": [
+      "policies_motor.parquet",
+      "test_motor.parquet",
+      "policies_buildings.parquet",
+      "test_buildings.parquet",
+      "policies_contents.parquet",
+      "test_contents.parquet"
+    ],
+    "row_identity": "row_id",
+    "row_order": "preserve source order",
+    "read_previous_clean_outputs_as_inputs": false,
+    "learned_transforms": false
+  },
+  "outputs": {
+    "root": "outputs/step2/prepared",
+    "publication": "atomic",
+    "policy_tables": {
+      "policies_motor.parquet": "data/policies_motor_clean.parquet",
+      "test_motor.parquet": "data/test_motor_clean.parquet",
+      "policies_buildings.parquet": "data/policies_buildings_clean.parquet",
+      "test_buildings.parquet": "data/test_buildings_clean.parquet",
+      "policies_contents.parquet": "data/policies_contents_clean.parquet",
+      "test_contents.parquet": "data/test_contents_clean.parquet"
+    },
+    "ledger": "ledger/cleaning-ledger.parquet",
+    "manifest": "prepare-manifest.json",
+    "reconciliation": "reconciliation.json",
+    "schemas": [
+      "schemas/step2-clean-policy.schema.json",
+      "schemas/step2-cleaning-ledger.schema.json"
+    ]
+  },
+  "rules": [
+    {
+      "rule_id": "customer_id_normalization",
+      "version": 1,
+      "status": "implemented_and_reverified",
+      "evidence_status": "verified_on_reference_hashes",
+      "applies_to": "all six policy tables; changes expected only for supported shortened motor IDs",
+      "inputs": [
+        "policy.customer_id",
+        "customers.customer_id"
+      ],
+      "output_columns": [
+        "customer_id_raw",
+        "customer_id_clean",
+        "customer_id_changed",
+        "customer_id_reason"
+      ],
+      "row_identity": "row_id",
+      "reason": "Recover exact canonical customer references without fuzzy matching or numeric coercion.",
+      "parameters": {
+        "canonical_width": 8,
+        "canonical_format_source": "unique customers.customer_id values",
+        "padding_character": "0"
+      },
+      "error_behavior": "Preserve raw value and fail or ledger unsupported null, malformed, overlong, colliding or unresolved keys; reject duplicate dimension keys.",
+      "tests": [
+        "leading-zero recovery",
+        "already canonical",
+        "null preservation",
+        "malformed and overlong rejection",
+        "duplicate dimension rejection",
+        "many-to-one policy references",
+        "idempotent repeat application"
+      ]
+    },
+    {
+      "rule_id": "inclusive_act365_exposure",
+      "version": 1,
+      "status": "implemented_as_separate_derived_field",
+      "evidence_status": "mechanically_verified_human_convention_review_pending",
+      "applies_to": "all six policy tables",
+      "inputs": [
+        "period_start",
+        "period_end",
+        "exposure"
+      ],
+      "output_columns": [
+        "exposure_raw",
+        "exposure_clean",
+        "exposure_classification",
+        "exposure_changed",
+        "exposure_reason"
+      ],
+      "row_identity": "row_id",
+      "reason": "Derive exposure once from preserved inclusive coverage dates and explain each raw difference.",
+      "parameters": {
+        "formula": "((period_end - period_start).days + 1) / 365",
+        "rounding_decimal_places": 4,
+        "comparison_absolute_tolerance": 0.00005,
+        "classifications": [
+          "matches_act365",
+          "stored_day_units",
+          "stored_360_basis",
+          "unresolved_mismatch"
+        ],
+        "maximum_exposure": null
+      },
+      "error_behavior": "Fail or ledger missing/inverted dates and unresolved mismatches; never alter dates, extend 2024 coverage or derive from a previously cleaned exposure.",
+      "tests": [
+        "one-day coverage",
+        "leap-day inclusion",
+        "valid 366-day coverage",
+        "stored day units",
+        "360-day basis",
+        "unchanged valid exposure",
+        "missing and inverted dates",
+        "idempotent rerun from raw dates"
+      ]
+    },
+    {
+      "rule_id": "sum_insured_unit_candidate",
+      "version": 1,
+      "status": "implemented_inferred_candidate_not_canonical",
+      "evidence_status": "reverified_inference_human_adoption_pending",
+      "applies_to": "buildings and contents policy tables only",
+      "inputs": [
+        "line",
+        "policy_id",
+        "new_business",
+        "sum_insured"
+      ],
+      "output_columns": [
+        "sum_insured_raw",
+        "sum_insured_candidate",
+        "sum_insured_unit_error_flag",
+        "sum_insured_proposed_divisor",
+        "sum_insured_candidate_reason",
+        "sum_insured_candidate_status"
+      ],
+      "row_identity": "row_id",
+      "reason": "Expose a reversible factor-of-1,000 candidate without overwriting or presenting it as organiser-confirmed truth.",
+      "parameters": {
+        "proposed_divisor": 1000,
+        "diagnostic_separators": {
+          "buildings": 2000000,
+          "contents": 1000000
+        },
+        "separator_interpretation": "observed-gap diagnostic, not a coverage limit"
+      },
+      "error_behavior": "Preserve raw and candidate status for null, boundary, sparse-history or ambiguous values; never extend the rule to claims, premiums or other fields.",
+      "tests": [
+        "ordinary value",
+        "supported high-cluster value",
+        "null preservation",
+        "ambiguous boundary or new value",
+        "line-specific separator",
+        "idempotent derivation from raw value"
+      ]
+    },
+    {
+      "rule_id": "missingness_and_availability",
+      "version": 1,
+      "status": "implemented_audit_and_flags_only",
+      "evidence_status": "profiled_on_reference_hashes",
+      "applies_to": "all six policy tables and referenced dimensions",
+      "inputs": [
+        "all original fields",
+        "telematics_opt_in",
+        "telematics_score"
+      ],
+      "output_columns": [
+        "telematics_score_missing",
+        "telematics_missing_reason",
+        "licence_start_age_derived",
+        "licence_start_age_below_14_flag"
+      ],
+      "row_identity": "row_id",
+      "reason": "Preserve structural and ordinary missingness without fitting future-leaking preprocessing.",
+      "parameters": {
+        "imputation": null,
+        "learned_encoding": null,
+        "quarantined_fields": [
+          "customer_service_contacts"
+        ],
+        "training_only_fields": [
+          "renewal_decision"
+        ],
+        "conditional_availability_fields": [
+          "annual_weather",
+          "customer_history_aggregates",
+          "historical_financial_aggregates"
+        ]
+      },
+      "error_behavior": "Keep rows and original values; flag rather than replace subjective plausibility issues.",
+      "tests": [
+        "structural versus unexpected telematics missingness",
+        "row preservation",
+        "original value preservation",
+        "unknown category preservation"
+      ]
+    },
+    {
+      "rule_id": "guarded_dimension_linkage",
+      "version": 1,
+      "status": "implemented_validation_and_reference_linkage",
+      "evidence_status": "verified_on_reference_hashes",
+      "applies_to": "all six policy tables",
+      "inputs": [
+        "customer_id_clean",
+        "address_id",
+        "period_start",
+        "period_end",
+        "customers.customer_id",
+        "addresses.address_id",
+        "weather.(address_id,year)"
+      ],
+      "output_columns": [
+        "customer_join_status",
+        "address_join_status",
+        "weather_join_status"
+      ],
+      "row_identity": "row_id multiset",
+      "reason": "Prove reference coverage without row multiplication or null-to-null matching.",
+      "parameters": {
+        "cardinality": "many_to_one",
+        "weather_key": [
+          "address_id",
+          "year"
+        ],
+        "cross_year_period_action": "flag; do not choose a weather year silently",
+        "dimension_materialization": "immutable input references; avoid redundant wide copies"
+      },
+      "error_behavior": "Reject duplicate dimension keys or row multiplication; preserve and ledger missing/null references and cross-year periods.",
+      "tests": [
+        "duplicate customer key",
+        "duplicate address key",
+        "duplicate weather key",
+        "same address across weather years",
+        "missing and null foreign keys",
+        "reordered dimensions",
+        "duplicate policy_id with distinct row_id",
+        "cross-year period"
+      ]
+    }
+  ],
+  "regression_reference": {
+    "status": "prior_direct_audit_checks_not_transformation_constants",
+    "apply_only_when_all_source_hashes_match": true,
+    "policy_rows": {
+      "policies_motor.parquet": 979968,
+      "test_motor.parquet": 254986,
+      "policies_buildings.parquet": 707726,
+      "test_buildings.parquet": 184155,
+      "policies_contents.parquet": 721617,
+      "test_contents.parquet": 187498
+    },
+    "customer_id_changed_rows": {
+      "policies_motor.parquet": 98110,
+      "test_motor.parquet": 25554
+    },
+    "training_exposure_exception_rows": 14229,
+    "sum_insured_candidate_rows": {
+      "policies_buildings.parquet": 1395,
+      "test_buildings.parquet": 370,
+      "policies_contents.parquet": 1402,
+      "test_contents.parquet": 360
+    }
+  },
+  "prohibited_operations": [
+    "raw input modification",
+    "target construction",
+    "claim-to-policy-period target allocation",
+    "IBNR or development estimation",
+    "validation split construction",
+    "model fitting or tuning",
+    "prediction generation",
+    "publishing or submission"
+  ]
+}

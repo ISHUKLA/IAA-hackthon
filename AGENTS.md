@@ -12,7 +12,7 @@ Keep original briefs unchanged unless the user requests edits. They contain unve
 
 ## Current scope
 
-Step 0 is the scaffold. Step 1 defines and verifies the prediction/scoring/submission contract. Execute the requested prompt completely, then report its result. Do not automatically execute later prompts, train models, develop targets, tune parameters or upload submissions.
+Step 0 is the scaffold, Step 1 historically defined and verified the prediction/scoring/submission contract, and Step 2 produced the reversible clean data layer. The current requested scope may advance through the numbered Step 3 prompts for claim linkage, financial reconciliation, maturity and reserving diagnostics, and explicitly conditional target candidates while preserving raw inputs and prior behavior. Execute only the specifically requested prompt completely, then report its result; do not automatically execute later prompts. Step 3 authorizes only its bounded claim/target and reporting-delay work: it does not authorize pricing-model training or tuning, validation split generation, test-target construction, competition predictions, publishing or submission upload.
 
 Perform routine, reversible work inside the requested scope without repeated permission requests. Ask only for a genuinely missing decision. An unresolved source issue can remain a disclosed assumption where the prompt permits it. Do not invent an answer or human sign-off.
 

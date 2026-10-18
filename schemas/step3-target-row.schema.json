@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/iaa/step3-target-row.schema.json",
+  "title": "Step 3 policy-period observed response and conditional candidate record",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "row_id",
+    "line",
+    "observed_net_incurred",
+    "accepted_reported_claim_count",
+    "positive_observed_cost_claim_count",
+    "reported_claim_development_adjustment",
+    "unreported_net_loss_estimate",
+    "future_recoveries_reported_claims",
+    "trend_to_2025_cost_level",
+    "target_candidate",
+    "target_version",
+    "financial_basis_status",
+    "source_claims_sha256",
+    "step2_manifest_digest",
+    "fit_population",
+    "fit_report_cutoff",
+    "transform_as_of_cutoff",
+    "estimation_scope",
+    "assumption_ids",
+    "human_review_status"
+  ],
+  "properties": {
+    "row_id": {"type": "string", "minLength": 1},
+    "line": {"enum": ["motor", "buildings", "contents"]},
+    "observed_net_incurred": {"type": "number"},
+    "accepted_reported_claim_count": {"type": "integer", "minimum": 0},
+    "positive_observed_cost_claim_count": {"type": "integer", "minimum": 0},
+    "reported_claim_development_adjustment": {"type": ["number", "null"]},
+    "unreported_net_loss_estimate": {"type": ["number", "null"]},
+    "future_recoveries_reported_claims": {"type": ["number", "null"]},
+    "trend_to_2025_cost_level": {"type": ["number", "null"]},
+    "target_candidate": {"type": ["number", "null"]},
+    "target_version": {"type": "string", "minLength": 1},
+    "financial_basis_status": {"enum": ["unresolved", "provisional", "human_approved"]},
+    "source_claims_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "step2_manifest_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "fit_population": {"type": ["string", "null"]},
+    "fit_report_cutoff": {"type": ["string", "null"], "format": "date"},
+    "transform_as_of_cutoff": {"type": "string", "format": "date"},
+    "estimation_scope": {
+      "enum": ["deterministic_observed", "full_snapshot_diagnostic_not_fold_safe", "fold_refit", "scenario_only", "unavailable"]
+    },
+    "assumption_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "human_review_status": {"enum": ["pending", "approved", "rejected"]}
+  }
+}

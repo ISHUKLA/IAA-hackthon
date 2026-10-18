@@ -1,0 +1,227 @@
+{
+  "schema_version": 1,
+  "config_id": "step3-target-construction-v1",
+  "status": "implemented_step3_observed_and_conditional_diagnostics",
+  "valuation_date": "2024-12-31",
+  "scope": {
+    "training_policy_years": [2021, 2022, 2023, 2024],
+    "policy_lines": ["motor", "buildings", "contents"],
+    "test_target_construction": false,
+    "pricing_model_training": false,
+    "validation_split_construction": false
+  },
+  "inputs": {
+    "claims": {
+      "path_source": "IAA_DATA_DIR/claims.parquet",
+      "reference_sha256": "323adf2e0f6c5975a026479d725d4cd04f51fce3aa069f897a99f664c6e392c0",
+      "required_columns": [
+        "claim_id",
+        "policy_id",
+        "line",
+        "peril",
+        "loss_date",
+        "report_date",
+        "status",
+        "paid_to_date",
+        "incurred_to_date",
+        "recoveries"
+      ]
+    },
+    "clean_training_policies": {
+      "manifest": "outputs/step2/prepared/prepare-manifest.json",
+      "manifest_logical_output_digest": "53badc0b97216a09ea005c5eb960d1196176e9180c0503360f6ba21c20470b36",
+      "files": {
+        "motor": "outputs/step2/prepared/data/policies_motor_clean.parquet",
+        "buildings": "outputs/step2/prepared/data/policies_buildings_clean.parquet",
+        "contents": "outputs/step2/prepared/data/policies_contents_clean.parquet"
+      },
+      "required_fields": [
+        "row_id",
+        "policy_id",
+        "period_start",
+        "period_end",
+        "exposure_raw",
+        "exposure_clean",
+        "line",
+        "split"
+      ]
+    }
+  },
+  "coverage_linkage": {
+    "claim_identity": "claim_id",
+    "policy_row_identity": "row_id",
+    "join_keys": ["line", "policy_id"],
+    "date_field": "loss_date",
+    "coverage_condition": "period_start <= loss_date <= period_end",
+    "boundaries": "inclusive",
+    "report_date_selects_coverage": false,
+    "test_policy_rows_eligible": false,
+    "duplicate_claim_id_action": "fail",
+    "overlapping_policy_period_action": "fail_and_record_ambiguous_matches",
+    "dispositions": [
+      "exactly_one_match",
+      "unmatched",
+      "ambiguous_multiple_match"
+    ],
+    "unmatched_reason_classes": [
+      "unknown_line",
+      "unknown_policy",
+      "before_first_supplied_coverage",
+      "after_last_supplied_coverage",
+      "between_supplied_periods",
+      "invalid_or_missing_loss_date",
+      "other_explicit_cause"
+    ],
+    "row_output_schema": "schemas/step3-claim-linkage.schema.json"
+  },
+  "status_treatment": {
+    "accepted_source_statuses": ["closed", "open"],
+    "excluded_source_statuses": ["repudiated"],
+    "official_term": "declined claims excluded",
+    "local_term_mapping_status": "provisional_terminology_mapping_human_review_pending",
+    "unknown_status_action": "fail_and_reconcile",
+    "zero_amount_accepted_claims_count_as_reported_claims": true
+  },
+  "reported_count_definitions": {
+    "source_reported_claim_count": "unique valid claim_id values with report_date on or before the declared as-of cutoff, before linkage or status exclusion",
+    "matched_reported_claim_count": "source reported claims with exactly one eligible loss-date coverage match",
+    "accepted_reported_claim_count": "matched reported claims whose source status is closed or open, including zero-cost claims",
+    "positive_observed_cost_claim_count": "accepted reported claims with observed_net_incurred greater than zero; never substituted for accepted_reported_claim_count",
+    "repudiated_reported_claim_count": "matched reported claims with status repudiated, retained as an explicit exclusion"
+  },
+  "financial_basis": {
+    "official_target_basis": "expected ultimate claim cost net of policy excess and recoveries, excluding declined claims",
+    "source_field_interpretation_status": "unresolved",
+    "provisional_audit_reference": {
+      "name": "observed_net_incurred",
+      "formula": "incurred_to_date - recoveries",
+      "condition": "valid only if incurred_to_date is gross of recorded recoveries and already reflects policy excess",
+      "status": "provisional_pending_field_definition_or_human_decision"
+    },
+    "competing_interpretations": [
+      {
+        "id": "incurred_gross_of_recorded_recoveries",
+        "observed_formula": "incurred_to_date - recoveries",
+        "risk": "incorrect if incurred_to_date is already net of recoveries"
+      },
+      {
+        "id": "incurred_already_net_of_recorded_recoveries",
+        "observed_formula": "incurred_to_date",
+        "risk": "subtracting recoveries again would double count them"
+      }
+    ],
+    "policy_excess_treatment": "do_not_subtract_again_without_source_evidence",
+    "selection_rule": "do not select a basis by predictive score or numerical convenience",
+    "negative_observed_amount_action": "fail_and_investigate_never_clip"
+  },
+  "monetary_precision": {
+    "source_display_scale": 2,
+    "reconciliation_method": "validate two-decimal source precision and reconcile integer minor units while preserving source doubles",
+    "minor_unit_validation_tolerance": 1e-06,
+    "aggregate_tolerance_minor_units": 1,
+    "round_to_force_reconciliation": false
+  },
+  "target_components": {
+    "observed_net_incurred": {
+      "kind": "measured_snapshot_reference_under_pending_financial_basis",
+      "available_at_preflight": false,
+      "sign_in_candidate": 1
+    },
+    "reported_claim_development_adjustment": {
+      "kind": "estimate_or_explicit_scenario",
+      "available_at_preflight": false,
+      "sign_in_candidate": 1
+    },
+    "unreported_net_loss_estimate": {
+      "kind": "estimate_under_reporting_and_severity_assumptions",
+      "available_at_preflight": false,
+      "sign_in_candidate": 1
+    },
+    "future_recoveries_reported_claims": {
+      "kind": "estimate_or_explicit_scenario_separate_from_recorded_recoveries",
+      "available_at_preflight": false,
+      "sign_in_candidate": -1
+    },
+    "trend_to_2025_cost_level": {
+      "kind": "optional_explicit_assumption",
+      "enabled": false,
+      "available_at_preflight": false,
+      "sign_in_candidate": 1
+    }
+  },
+  "candidate_identity": "observed_net_incurred + reported_claim_development_adjustment + unreported_net_loss_estimate - future_recoveries_reported_claims + trend_to_2025_cost_level",
+  "target_row_schema": "schemas/step3-target-row.schema.json",
+  "provenance_fields": [
+    "target_version",
+    "financial_basis_status",
+    "source_claims_sha256",
+    "step2_manifest_digest",
+    "fit_population",
+    "fit_report_cutoff",
+    "transform_as_of_cutoff",
+    "estimation_scope",
+    "assumption_ids",
+    "human_review_status"
+  ],
+  "api_contracts": {
+    "build_claim_crosswalk": {
+      "fit_required": false,
+      "parameters": ["claims", "clean_training_policies", "linkage_config", "as_of_cutoff"],
+      "as_of_rule": "report_date must be on or before as_of_cutoff for an as-of reported population"
+    },
+    "build_observed_response": {
+      "fit_required": false,
+      "parameters": ["crosswalk", "financial_basis", "status_treatment", "as_of_cutoff"],
+      "output_name": "observed_net_incurred"
+    },
+    "fit_reporting_delay": {
+      "fit_required": true,
+      "required_metadata": ["fit_population", "fit_report_cutoff", "valuation_cutoff", "peril_grouping", "exclusions", "estimation_scope"],
+      "full_snapshot_label": "full_snapshot_diagnostic_not_fold_safe"
+    },
+    "transform_reporting_completeness": {
+      "fit_required": false,
+      "required_metadata": ["fit_artifact_id", "fit_report_cutoff", "transform_as_of_cutoff"],
+      "leakage_rule": "later validation must refit using only its permitted fit population and report cutoff"
+    },
+    "apply_reported_claim_scenario": {
+      "fit_required": false,
+      "parameters": ["observed_components", "case_parameters", "future_recovery_parameters", "as_of_cutoff"]
+    },
+    "assemble_target_candidates": {
+      "fit_required": false,
+      "parameters": ["observed_response", "development_components", "candidate_version", "provenance"]
+    }
+  },
+  "outputs": {
+    "root": "outputs/step3/prepared",
+    "publication": "atomic",
+    "claim_crosswalk": "linkage/claim-to-row.parquet",
+    "claim_exceptions": "linkage/claim-exceptions.parquet",
+    "observed_targets": "targets/observed-policy-response.parquet",
+    "peril_targets": "targets/observed-policy-peril-response.parquet",
+    "diagnostics": "diagnostics/",
+    "manifest": "target-manifest.json",
+    "reconciliation": "target-reconciliation.json",
+    "status": "implemented_by_s3_01_through_s3_07"
+  },
+  "prohibited_in_s3_00": [
+    "claim-to-policy allocation",
+    "observed target construction",
+    "reporting-delay fitting",
+    "IBNR or case adequacy estimation",
+    "scenario factor selection",
+    "test target construction",
+    "validation split construction",
+    "pricing model training or tuning",
+    "prediction generation",
+    "commit or push"
+  ],
+  "human_review": {
+    "financial_basis": "pending",
+    "repudiated_declined_terminology": "pending",
+    "act365_downstream_adoption": "pending",
+    "sum_insured_candidate_adoption": "pending",
+    "final_target_candidate": "pending"
+  }
+}

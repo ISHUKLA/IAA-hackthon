@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/iaa/step3-claim-linkage.schema.json",
+  "title": "Step 3 claim-to-policy-row linkage record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "claim_id",
+    "policy_id",
+    "line",
+    "peril",
+    "loss_date",
+    "report_date",
+    "status",
+    "paid_to_date",
+    "incurred_to_date",
+    "recoveries",
+    "matched_row_id",
+    "match_count",
+    "disposition",
+    "exception_reason",
+    "linkage_rule_version",
+    "source_claims_sha256",
+    "as_of_cutoff"
+  ],
+  "properties": {
+    "claim_id": {"type": "string", "minLength": 1},
+    "policy_id": {"type": "string", "minLength": 1},
+    "line": {"enum": ["motor", "buildings", "contents"]},
+    "peril": {"type": "string", "minLength": 1},
+    "loss_date": {"type": "string", "format": "date"},
+    "report_date": {"type": "string", "format": "date"},
+    "status": {"type": "string", "minLength": 1},
+    "paid_to_date": {"type": "number"},
+    "incurred_to_date": {"type": "number"},
+    "recoveries": {"type": "number"},
+    "matched_row_id": {"type": ["string", "null"]},
+    "match_count": {"type": "integer", "minimum": 0},
+    "disposition": {"enum": ["exactly_one_match", "unmatched", "ambiguous_multiple_match"]},
+    "exception_reason": {
+      "enum": [
+        null,
+        "unknown_line",
+        "unknown_policy",
+        "before_first_supplied_coverage",
+        "after_last_supplied_coverage",
+        "between_supplied_periods",
+        "invalid_or_missing_loss_date",
+        "other_explicit_cause",
+        "overlapping_coverage"
+      ]
+    },
+    "linkage_rule_version": {"const": "step3-target-construction-v1"},
+    "source_claims_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "as_of_cutoff": {"type": "string", "format": "date"}
+  }
+}
