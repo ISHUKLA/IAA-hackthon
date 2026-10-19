@@ -1,6 +1,6 @@
 PYTHON ?= python
 
-.PHONY: help check doctor step1-check step2-check step2-acceptance prepare-data repair-step2 step3-check build-targets step3-acceptance target step5-check run-baselines step5-acceptance step6-check run-feature-experiments step6-diagnostics step6-acceptance
+.PHONY: help check doctor step1-check step2-check step2-acceptance prepare-data repair-step2 step3-check build-targets step3-acceptance target step5-check run-baselines step5-acceptance step6-check run-feature-experiments step6-diagnostics step6-acceptance step7-check step7-preflight run-lightgbm-challenger step7-acceptance step8-check step8-preflight step8-diagnosis run-conditional-complexity step8-acceptance
 
 DATA_DIR ?= $(IAA_DATA_DIR)
 STEP2_OUTPUT ?= outputs/step2/prepared
@@ -68,3 +68,53 @@ step6-diagnostics:
 
 step6-acceptance:
 	PYTHONPATH=src $(PYTHON) scripts/step6_acceptance.py --output-dir "$(STEP6_OUTPUT)" --step2-dir "$(STEP2_REPAIR_OUTPUT)"
+
+step8-check:
+	PYTHONPATH=src $(PYTHON) -m pytest -q tests/test_complexity_preflight.py tests/test_restricted_complexity.py tests/test_baselines.py tests/test_reporting.py tests/test_validation_folds.py tests/test_validation_scoring.py
+
+step8-preflight:
+	PYTHONPATH=src $(PYTHON) -m iaa_hackathon.complexity_preflight
+
+step8-diagnosis:
+	PYTHONPATH=src $(PYTHON) scripts/step8_diagnosis.py
+
+run-conditional-complexity:
+	PYTHONPATH=src $(PYTHON) scripts/run_conditional_complexity.py
+
+step8-acceptance:
+	PYTHONPATH=src $(PYTHON) scripts/step8_acceptance.py
+
+step7-check:
+	PYTHONPATH=src $(PYTHON) -m pytest -q tests/test_lightgbm_challenger.py tests/test_reporting.py tests/test_validation_folds.py tests/test_validation_scoring.py
+
+step7-preflight:
+	PYTHONPATH=src $(PYTHON) scripts/step7_preflight.py
+
+run-lightgbm-challenger:
+	PYTHONPATH=src $(PYTHON) scripts/run_lightgbm_challenger.py
+
+step7-acceptance:
+	PYTHONPATH=src $(PYTHON) scripts/step7_acceptance.py
+
+.PHONY: step9-check step9-preflight build-final-model build-submission verify-submission reproduce-step9 step9-finalize
+
+step9-check:
+	PYTHONPATH=src $(PYTHON) -m pytest -q tests/test_final_submission.py tests/test_submission.py tests/test_baselines.py tests/test_metrics.py
+
+step9-preflight:
+	PYTHONPATH=src $(PYTHON) scripts/step9.py preflight --data-dir "$(DATA_DIR)"
+
+build-final-model:
+	PYTHONPATH=src $(PYTHON) scripts/step9.py model --data-dir "$(DATA_DIR)"
+
+build-submission:
+	PYTHONPATH=src $(PYTHON) scripts/step9.py submission --data-dir "$(DATA_DIR)"
+
+verify-submission:
+	PYTHONPATH=src $(PYTHON) scripts/step9.py verify --data-dir "$(DATA_DIR)"
+
+reproduce-step9:
+	PYTHONPATH=src $(PYTHON) scripts/step9.py reproduce --data-dir "$(DATA_DIR)"
+
+step9-finalize:
+	PYTHONPATH=src $(PYTHON) scripts/step9.py finalize --data-dir "$(DATA_DIR)"

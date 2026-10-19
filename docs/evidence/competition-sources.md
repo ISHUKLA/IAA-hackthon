@@ -30,3 +30,9 @@ Technical primary sources:
 - Claude Code memory: https://code.claude.com/docs/en/memory
 
 Original context.md and what-good-looks-like.md express project choices as well as facts. They are not independent proof of official rules or professional-standard requirements. Log conflicts and identify any proposed change for human review.
+
+## Step 9 current-access check, 19 October 2026
+
+Fresh retrieval attempts at 12:58:30 UTC failed for the competition overview, data, evaluation and rules URLs: the public-page tool reported each URL inaccessible and returned no page text. The evaluation route from the Step 1 register (`overview/evaluation`) also failed at 13:06:31 UTC. Exact URLs and results are in reports/step9/official-rules-check.json. No terms were accepted, organiser contacted or submission made.
+
+All successful extracts above and in docs/step1/source-register.md remain dated PRIOR verification. Current deadlines, submission limits and final-entry limits are unresolved; neither the old five-per-day plan nor the later ten-per-day extract is claimed current. Scorer code, pooling and weights remain unresolved. This access limitation does not erase the established local file/row contract, but must be resolved before a separate upload decision.

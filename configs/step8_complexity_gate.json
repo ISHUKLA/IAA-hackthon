@@ -1,0 +1,191 @@
+{
+  "config_id": "step8-contents-tent-v1",
+  "status": "registered_before_fitting",
+  "execution_contract": "prompts/step8/00-conditional-complexity.md",
+  "registered_at_ns": 1792413404197902000,
+  "benchmark_model_id": "S6_selected_compact_tweedie_glm",
+  "benchmark_frozen_sha256": "9bea18feaac91cd00734d41f64668c7a818f8a16dac204d223a623299107bfba",
+  "diagnosis_sha256": "5fcf039016d6a5d1f1a884f7e7da615bb32d785846df1dc24f3c86bd9b9cca11",
+  "response_version": "repaired_observed_net_incurred_snapshot_2024-12-31",
+  "experiment_mode": "retrospective_snapshot_proxy",
+  "scenario": "repaired observed snapshot only; compatible monetary scenarios unavailable",
+  "primary_fold": "F2023",
+  "challenge_fold": "F2024",
+  "challenge_status": "reused development challenge; already inspected during Steps 5-7",
+  "diagnosed_primary_weakness": "contents intermediate sum-insured bands underpredict F2023 snapshot losses; bands 3/4 AE 1.1267/1.2072 with bootstrap lower limits above 1",
+  "candidate": {
+    "id": "contents_train_quantile_tent_glm",
+    "family": "one line-specific restricted nonlinear transformation",
+    "affected_line": "contents",
+    "source": "sum_insured_repaired",
+    "new_feature": "contents_insured_tent",
+    "basis": "max(0,min((log1p(SI)-a)/(b-a),(c-log1p(SI))/(c-b)))",
+    "training_knot_quantiles": [
+      0.2,
+      0.5,
+      0.8
+    ],
+    "primary_training_log_knots": [
+      10.069044362997353,
+      10.547995807489514,
+      10.961295207644392
+    ],
+    "missing_insured": "neutral zero for the new basis; preserve original SI missingness and S6 imputation",
+    "additional_free_regression_coefficients": 1,
+    "additional_fitted_statistics": "three training quantiles and numeric preprocessing for one additional column",
+    "rationale": "insured value affects potential claim amount; one local curvature basis tests the observed intermediate-value residual pattern, without asserting causality",
+    "unchanged_lines": [
+      "motor",
+      "buildings"
+    ]
+  },
+  "benchmark_features": {
+    "motor": [
+      "driver_age",
+      "years_licensed",
+      "vehicle_age",
+      "annual_mileage",
+      "voluntary_excess",
+      "compulsory_excess",
+      "cover_type",
+      "vehicle_use",
+      "body_type",
+      "driver_age_squared",
+      "licensing_age",
+      "annual_mileage_missing",
+      "vehicle_age_missing",
+      "engine_size_cc_missing"
+    ],
+    "buildings": [
+      "policyholder_age",
+      "sum_insured_repaired",
+      "days_unoccupied",
+      "voluntary_excess",
+      "compulsory_excess",
+      "construction_type_standardized",
+      "occupancy",
+      "log_sum_insured",
+      "smoke_alarms",
+      "accidental_damage_cover",
+      "days_unoccupied_missing"
+    ],
+    "contents": [
+      "policyholder_age",
+      "sum_insured_repaired",
+      "voluntary_excess",
+      "compulsory_excess",
+      "tenure",
+      "security_level",
+      "accidental_damage_cover",
+      "log_sum_insured",
+      "works_from_home",
+      "lodgers",
+      "bicycle_cover",
+      "high_value_items",
+      "security_high_value"
+    ]
+  },
+  "benchmark_blocks": {
+    "motor": [
+      "age_nonlinearity",
+      "ordinary_missingness"
+    ],
+    "buildings": [
+      "log_sum_insured",
+      "occupancy_security"
+    ],
+    "contents": [
+      "log_sum_insured",
+      "household_use",
+      "security_value"
+    ]
+  },
+  "glm": {
+    "power": 1.5,
+    "link": "log",
+    "alpha": 1.0,
+    "max_iter": 100,
+    "tol": 1e-05,
+    "solver": "newton-cholesky",
+    "seed": 20261019
+  },
+  "input_policy_sha256": "26fe66401b44aff157754c9166c8117b8345c6e94c1d88a6a87bc8dda986d793",
+  "matched_claims_sha256": "994815e1c39e4b37bd55a8a12e0cf4e9b65d542052fed075a8f855841f55cd85",
+  "fold_membership_sha256": "2f7cf05e0b41cc92466d7cff4f560b49157dba8b8979c7e355676baa07ca0eaf",
+  "fold_membership_digest": "f444d8c7f7a91e842a5f2789d212121bb65578d4e1389ce5cf56f3f4eb1a7fa5",
+  "benchmark_prediction_sha256": {
+    "F2023": "9a3d6fc1c2dd026ef65024e9919e075f97a6f0243221b681c0479f9cc5610f26",
+    "F2024": "b25b859aa20a094751cc1ed5f5a28a7d4bd3859ec327e435b467e1e9706c8fc2"
+  },
+  "scoring": {
+    "metric": "Tweedie D2 power 1.5",
+    "pooling": "provisional unweighted policy-period rows",
+    "exposure": "annual rate times exposure_clean once",
+    "training_weight": "sqrt(exposure_clean)",
+    "official_implementation": "unverified"
+  },
+  "materiality": {
+    "rule": "half the prior S6-vs-S7 contents paired 95% interval width, converted to pooled-row scale; also require the new candidate paired interval lower bound > 0",
+    "minimum_pooled_mean_deviance_gain": 0.060400893187577284,
+    "equivalent_minimum_D2_gain": 0.0005173946005555436,
+    "contents_row_share": 0.2995841016675847,
+    "reference_ci95": [
+      -0.33857580700467405,
+      0.06465582545756834
+    ],
+    "declared_before_candidate_fit": true,
+    "universal_threshold": false
+  },
+  "promotion_rules": {
+    "1": "primary pooled gain exceeds materiality and paired CI95 lower limit > 0",
+    "2": {
+      "exclude_top10_observed_gain_positive": true,
+      "exclude_top1pct_observed_gain_positive": true,
+      "subtract_largest_contents_claim_gain_positive": true,
+      "minimum_contents_quantile_bands_with_positive_gain": 2
+    },
+    "3": {
+      "maximum_increase_absolute_AE_error_overall_and_per_line": 0.01
+    },
+    "4": {
+      "prediction_domain": "positive finite",
+      "overall_total_ratio_bounds": [
+        0.95,
+        1.05
+      ],
+      "per_row_prediction_ratio_bounds": [
+        0.5,
+        2.0
+      ]
+    },
+    "5": "frozen hashes, IDs, train-only features, unchanged other lines and reload checks all pass",
+    "6": {
+      "maximum_candidate_fits": 2,
+      "maximum_runtime_seconds": 180,
+      "maximum_peak_process_memory_bytes": 6442450944,
+      "additional_free_regression_coefficients": 1
+    },
+    "7": "one frozen challenge gain >= minus the predeclared materiality tolerance; no retuning"
+  },
+  "uncertainty": {
+    "method": "canonical customer-cluster paired fixed-prediction bootstrap",
+    "replicates": 200,
+    "seed": 20261019,
+    "includes_search_or_target_uncertainty": false
+  },
+  "computational_budget": {
+    "candidate_families": 1,
+    "hyperparameter_searches": 0,
+    "training_fits": 2,
+    "output_dir": "outputs/step8/contents-tent"
+  },
+  "prohibited_information": [
+    "held-out outcomes in fitted features or parameters",
+    "unsafe history, final status or contacts",
+    "unverified weather/telematics timing",
+    "premium",
+    "test labels",
+    "invented ultimate or historical financial labels"
+  ],
+  "human_actuarial_review": "pending"
+}

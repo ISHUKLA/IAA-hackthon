@@ -14,5 +14,14 @@
     },
     "rejected_no_main_fold_improvement": ["motor.vehicle_mileage", "buildings.construction_interaction"],
     "conditional_unavailable": ["telematics_score", "whole_year_weather", "monetary_history", "final_status_history"]
+  },
+  "step7_decision": {
+    "phase_A": "exact selected S6 features and blocks; no additions",
+    "feature_allowlists": "configs/step7_lightgbm.json",
+    "phase_B": "not executed",
+    "decision": "glm_preferred_for_step8",
+    "new_features": [],
+    "availability_or_repair_adoption_changed": false,
+    "evidence": "docs/step7/lightgbm-results.md"
   }
 }

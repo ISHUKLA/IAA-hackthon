@@ -1,0 +1,229 @@
+{
+  "config_id": "step9-frozen-S6-observed-proxy-v2-immutable-audit",
+  "model_id": "S6_selected_compact_tweedie_glm",
+  "benchmark_path": "outputs/step8/benchmark-frozen.json",
+  "decision_path": "outputs/step8/decision.json",
+  "response_version": "repaired_observed_net_incurred_snapshot_2024-12-31",
+  "scenario": "deduplicated_matched_open_closed_incurred_less_recorded_recoveries; case_factor=1; no_monetary_IBNR; future_recovery=0_identity; trend=1_identity; NOT_ULTIMATE",
+  "training_years": [
+    2021,
+    2022,
+    2023,
+    2024
+  ],
+  "financial_valuation_date": "2024-12-31",
+  "training_path": "outputs/step2/repairs/model/training-model-table.parquet",
+  "test_path": "outputs/step2/repairs/model/test-model-table.parquet",
+  "claims_path": "outputs/step2/repairs/claims/matched.parquet",
+  "features": {
+    "motor": [
+      "driver_age",
+      "years_licensed",
+      "vehicle_age",
+      "annual_mileage",
+      "voluntary_excess",
+      "compulsory_excess",
+      "cover_type",
+      "vehicle_use",
+      "body_type",
+      "driver_age_squared",
+      "licensing_age",
+      "annual_mileage_missing",
+      "vehicle_age_missing",
+      "engine_size_cc_missing"
+    ],
+    "buildings": [
+      "policyholder_age",
+      "sum_insured_repaired",
+      "days_unoccupied",
+      "voluntary_excess",
+      "compulsory_excess",
+      "construction_type_standardized",
+      "occupancy",
+      "log_sum_insured",
+      "smoke_alarms",
+      "accidental_damage_cover",
+      "days_unoccupied_missing"
+    ],
+    "contents": [
+      "policyholder_age",
+      "sum_insured_repaired",
+      "voluntary_excess",
+      "compulsory_excess",
+      "tenure",
+      "security_level",
+      "accidental_damage_cover",
+      "log_sum_insured",
+      "works_from_home",
+      "lodgers",
+      "bicycle_cover",
+      "high_value_items",
+      "security_high_value"
+    ]
+  },
+  "blocks": {
+    "motor": [
+      "age_nonlinearity",
+      "ordinary_missingness"
+    ],
+    "buildings": [
+      "log_sum_insured",
+      "occupancy_security"
+    ],
+    "contents": [
+      "log_sum_insured",
+      "household_use",
+      "security_value"
+    ]
+  },
+  "source_features": {
+    "motor": [
+      "driver_age",
+      "years_licensed",
+      "vehicle_age",
+      "annual_mileage",
+      "voluntary_excess",
+      "compulsory_excess",
+      "cover_type",
+      "vehicle_use",
+      "body_type",
+      "engine_size_cc"
+    ],
+    "buildings": [
+      "policyholder_age",
+      "sum_insured_repaired",
+      "days_unoccupied",
+      "voluntary_excess",
+      "compulsory_excess",
+      "construction_type_standardized",
+      "occupancy",
+      "smoke_alarms",
+      "accidental_damage_cover"
+    ],
+    "contents": [
+      "policyholder_age",
+      "sum_insured_repaired",
+      "voluntary_excess",
+      "compulsory_excess",
+      "tenure",
+      "security_level",
+      "accidental_damage_cover",
+      "works_from_home",
+      "lodgers",
+      "bicycle_cover",
+      "high_value_items"
+    ]
+  },
+  "excluded": [
+    "row_id",
+    "policy_id",
+    "customer_id",
+    "customer_id_clean",
+    "address_id",
+    "claim_id",
+    "observed_net_incurred",
+    "observed_incurred",
+    "observed_recoveries",
+    "same_period_claims",
+    "final_claim_status",
+    "customer_service_contacts",
+    "renewal_decision",
+    "telematics_score",
+    "weather_year",
+    "monetary_history",
+    "current_status_history",
+    "written_premium"
+  ],
+  "preprocessing": {
+    "numeric": "training median plus missing indicators, StandardScaler with_mean=False",
+    "categorical": "training most_frequent imputation, onehot ignore_unknown min_frequency=100",
+    "fitted_on": "all and only 2021-2024 training rows for the same line",
+    "derived": "unchanged add_feature_blocks from S6; no new history"
+  },
+  "rate_formulation": {
+    "response": "observed_net_incurred / exposure_clean",
+    "training_weight": "sqrt(exposure_clean)",
+    "prediction": "annual_rate * exposure_clean exactly once",
+    "output_unit": "policy_period_cost",
+    "metric_power": 1.5,
+    "metric_pooling": "provisional pooled unweighted"
+  },
+  "settings": {
+    "power": 1.5,
+    "link": "log",
+    "alpha": 1,
+    "max_iter": 100,
+    "tol": 0.00001,
+    "solver": "newton-cholesky",
+    "seed": 20261019
+  },
+  "numerical_threads": 1,
+  "floor": null,
+  "tolerance": {
+    "rtol": 1e-12,
+    "atol": 1e-10
+  },
+  "csv_serialization": {
+    "float_format": "%.17g",
+    "encoding": "utf-8",
+    "line_terminator": "LF",
+    "index": false,
+    "order": "exact sample row order",
+    "overwrite": false
+  },
+  "expected_training_rows": 2409311,
+  "expected_rows": 626639,
+  "expected_test_rows_by_line": {
+    "motor": 254986,
+    "buildings": 184155,
+    "contents": 187498
+  },
+  "sample_filename": "sample_submission.parquet",
+  "environment_lock": "requirements/step7-py312.lock",
+  "python": "3.12.11",
+  "diagnostics": {
+    "small_cost": 1,
+    "large_cost": 10000,
+    "refit_total_alert_fraction": 0.25,
+    "alert_threshold_status": "operational review trigger only, not calibration/selection target"
+  },
+  "inputs_sha256": {
+    "outputs/step8/benchmark-frozen.json": "9bea18feaac91cd00734d41f64668c7a818f8a16dac204d223a623299107bfba",
+    "outputs/step8/decision.json": "f281dc9aa84d249356455a95da1530ac98a10f8242f625b2f14d83b28c898691",
+    "outputs/step8/acceptance.json": "d471405786a7c802e0a92729fb4d411eb701c86e71fbb36865dde5fecdba2bf6",
+    "outputs/step8/contents-tent/manifest.json": "78d11c32b008717dcf8216b6e79f4a7262555a118bb974961f7fa9b0f87557d3",
+    "requirements/step7-py312.lock": "be70c8bfe39341ed865729b33ca85dc2cac2b0de4e452fac0779fe9bf2cc66d5",
+    "configs/features.json": "7062e45171c609b323f94740b508ee9beb5963a5c695e2f63a16d87757490c18",
+    "configs/baselines.json": "29b3a220fc9436de0e3d6f13253bde9307170404bdaa49f02c37a916cd100ede",
+    "configs/validation.json": "c353cd327677d42e0c11cdde436944300a6dbf7fbccc9b893976b124665d76d7",
+    "configs/problem_contract.json": "707e6e4f3c66f4d84f0de18e06be7dca6870199d986e5b4308a5d3fbf24eee1e",
+    "prompts/step9/00-finalise-and-verify.md": "d28c1919af198ea93e0e6d1f5b9f31d9454d7fe1026b990940ca1dff28062b34",
+    "outputs/step2/repairs/repair-audit.json": "e0b5cb5265cc6888ddea243b804f356f630cefb964f5c3947247bc02939e4433",
+    "outputs/step2/repairs/claims/matched.parquet": "994815e1c39e4b37bd55a8a12e0cf4e9b65d542052fed075a8f855841f55cd85",
+    "outputs/step2/repairs/model/training-model-table.parquet": "26fe66401b44aff157754c9166c8117b8345c6e94c1d88a6a87bc8dda986d793",
+    "outputs/step2/repairs/model/test-model-table.parquet": "82a6a968f1c16b10c97c9657c4c20098082a920bc6758e4a6413148269a5a60b"
+  },
+  "code_sha256": {
+    "src/iaa_hackathon/baselines.py": "9a65c5c50478efa8e3b81beb43d82b32e96083e7e274f26ab1cb3315ac9562a0",
+    "src/iaa_hackathon/submission.py": "e3a388772f5b77735d72cc47c685edfcc86463c7d7f82820bc5e728dea8f3c80",
+    "src/iaa_hackathon/final_submission.py": "194dae08c2bd97e64ba5dca57be89f2b77d87a3758844a65303f8ed32b770dd3",
+    "src/iaa_hackathon/final_diagnostics.py": "c4036c9e3385c41093ae844744b0347fa8d0eb28f1dc5d086c7a2873cbd02da2",
+    "scripts/step9.py": "2b4db170d473672a07822b07845601e4bad0bb21a7bde0115d4d647544dd356f"
+  },
+  "raw_sha256": {
+    "addresses.parquet": "2f1a9a157649a73ed1b0ee9b2caa3660b4c2a11766af3c64ab5131389079c0b1",
+    "claims.parquet": "323adf2e0f6c5975a026479d725d4cd04f51fce3aa069f897a99f664c6e392c0",
+    "customers.parquet": "065458a0b3aa9d3499e80b3b25b76baf0ef6245146477b6861f6ea35edf581eb",
+    "policies_buildings.parquet": "eb84372c23c16ed0619d89c8eb1396ab6916e5ec46a5907ce42c3dfce4a91cbe",
+    "policies_contents.parquet": "8c067cc80baed583100df999e1c3d5e389295702f7bac21d5331bbd639b83fcd",
+    "policies_motor.parquet": "4d2d7ae03971d5d6df3a71bbaf0ebc168250a6807b27d1561d38b638434dc95e",
+    "sample_submission.parquet": "9529f3b6a679d3410350baa7c2ef3fb085d1d8843a838360c5852dfe820d4d95",
+    "test_buildings.parquet": "7b2b96507de29241c70617c17df66146ed30b51f826ce5219bbda5da536d4957",
+    "test_contents.parquet": "c2212f62f3b7a21431c0073277549c3db5e63857565a8b88855e79a65fa1b8b6",
+    "test_motor.parquet": "8d28fb9fd091caf2a044913a013592226a4c0917d5c6fcc9c5e8cdcec2ab4fc5",
+    "weather.parquet": "b8407f0f3c7279a49297c969a4ab2905641b232910e316fb806730065987cd49"
+  },
+  "packaging_history": {"previous_protocol":"outputs/step9-packaging-v1","reason":"Protect provenance snapshots and return an existing immutable manifest without rewriting its referenced evidence; no numerical/model/response change","prior_csv_sha256":"dfb3e565d97f0a4a597ab3051b6cffd616da5022aaf8da10aa0736db436e6274"},
+  "human_actuarial_approval": "pending",
+  "upload_status": "not_uploaded"
+}

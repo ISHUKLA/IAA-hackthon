@@ -1,0 +1,155 @@
+{
+  "scope": "Steps 2–9 AI/automated evidence; no fabricated human oversight",
+  "records": [
+    {
+      "id": "S9-audit-correction",
+      "issue_or_task": "Repeated finalization must not overwrite the audit evidence referenced by an immutable manifest",
+      "ai_proposal": "Content-address Git snapshots and verify/reuse an existing final manifest before any output-writing branch",
+      "evidence_checked": "Code review after the first numerically successful production and clean reproduction",
+      "automated_verification": "Synthetic changed-diff rerun checks preserve all original snapshot hashes; finalization rerun acceptance verifies no manifest/patch mutation",
+      "actual_human_decision": "pending; this is an AI-caught implementation defect and automated verification, not human oversight",
+      "implementation_and_measured_impact": "The first protocol, configuration, models, CSV and exact clean reproduction are preserved under outputs/step9-packaging-v1/; v2 changes audit packaging only and is frozen before a new controlled production and clean reproduction",
+      "unresolved_uncertainty": "No model-selection, response, feature or actuarial assumption changed; human approval remains pending"
+    },
+    {
+      "id": "S2-ID",
+      "issue_or_task": "S2-ID",
+      "ai_proposal": "Normalize motor customer references to eight characters only after dimension validation",
+      "evidence_checked": "docs/step2/customer-identifiers.md",
+      "automated_verification": "Canonical dimension uniqueness and exact joins",
+      "actual_human_decision": "pending; user authorised stage execution, not actuarial adoption or approval",
+      "implementation_and_measured_impact": "123,664 references repaired; no row multiplication",
+      "unresolved_uncertainty": "No fuzzy joins; raw values retained"
+    },
+    {
+      "id": "S2-exposure",
+      "issue_or_task": "S2-exposure",
+      "ai_proposal": "Use separately derived inclusive ACT/365 exposure, preserve corrupted raw exposure",
+      "evidence_checked": "docs/step2/exposure-reconciliation.md",
+      "automated_verification": "Dates and exact classification reconciliation",
+      "actual_human_decision": "pending; user authorised stage execution, not actuarial adoption or approval",
+      "implementation_and_measured_impact": "14,229 training exposures repaired; no test exposure changed",
+      "unresolved_uncertainty": "Convention adoption pending"
+    },
+    {
+      "id": "S2-duplicates",
+      "issue_or_task": "S2-duplicates",
+      "ai_proposal": "Port supplied repair proposal; remove only exact duplicates across all non-claim-id fields",
+      "evidence_checked": "docs/step2/data-repairs.md",
+      "automated_verification": "Raw hashes, 604 groups and matched/quarantined accounting",
+      "actual_human_decision": "pending; user authorised stage execution, not actuarial adoption or approval",
+      "implementation_and_measured_impact": "604 copies removed; 162,546 clean claims",
+      "unresolved_uncertainty": "Human adoption of deduplication pending"
+    },
+    {
+      "id": "S2-SI",
+      "issue_or_task": "S2-SI",
+      "ai_proposal": "Use separately named factor-of-1000 inferred candidate, never overwrite raw",
+      "evidence_checked": "docs/step2/sum-insured-review.md",
+      "automated_verification": "Cluster gap, repeated-policy support; S6 comparisons",
+      "actual_human_decision": "pending; user authorised stage execution, not actuarial adoption or approval",
+      "implementation_and_measured_impact": "2,797 train and 730 test inferred candidates; fixed-model raw sensitivity in S9",
+      "unresolved_uncertainty": "Unit interpretation pending; sparse/new risks"
+    },
+    {
+      "id": "S2-leakage",
+      "issue_or_task": "S2-leakage",
+      "ai_proposal": "Exclude contacts, unsafe weather, renewal decisions, current financial history and raw IDs",
+      "evidence_checked": "docs/step4/feature-availability.md",
+      "automated_verification": "Allowlist and timing checks, synthetic mutation tests",
+      "actual_human_decision": "pending; user authorised stage execution, not actuarial adoption or approval",
+      "implementation_and_measured_impact": "Only the frozen 14/11/13 line-specific features used",
+      "unresolved_uncertainty": "Customer snapshot timing not fully established"
+    },
+    {
+      "id": "S3-linkage",
+      "issue_or_task": "S3-linkage",
+      "ai_proposal": "Allocate by line/policy and inclusive loss date; quarantine rather than speculate",
+      "evidence_checked": "docs/step3/after-data-repairs-diagnostics.md",
+      "automated_verification": "Integer minor-unit row reconciliation",
+      "actual_human_decision": "pending; user authorised stage execution, not actuarial adoption or approval",
+      "implementation_and_measured_impact": "160,432 accepted matched claims; 741,156,868.43 CU; 413 quarantined",
+      "unresolved_uncertainty": "1,721,459.84 CU quarantined; no guessed allocation"
+    },
+    {
+      "id": "S3-response",
+      "issue_or_task": "S3-response",
+      "ai_proposal": "Keep incurred minus recorded recoveries as provisional observed reference",
+      "evidence_checked": "docs/step3/observed-response.md",
+      "automated_verification": "Paid/incurred/case balances and exact components",
+      "actual_human_decision": "pending; user authorised stage execution, not actuarial adoption or approval",
+      "implementation_and_measured_impact": "No extra excess deduction; recorded recoveries subtracted once",
+      "unresolved_uncertainty": "Incurred gross/net definition pending"
+    },
+    {
+      "id": "S3-maturity",
+      "issue_or_task": "S3-maturity",
+      "ai_proposal": "Reject automatic monetary IBNR/inverse-count completeness, invented triangles and unsupported load factors",
+      "evidence_checked": "docs/step3/after-data-repairs-diagnostics.md",
+      "automated_verification": "Single valuation and count-delay diagnostic limits",
+      "actual_human_decision": "pending; user authorised stage execution, not actuarial adoption or approval",
+      "implementation_and_measured_impact": "No invented ultimate labels, monetary IBNR or historical financial vintages",
+      "unresolved_uncertainty": "True ultimate, future recovery and trend unidentified"
+    },
+    {
+      "id": "S4-folds",
+      "issue_or_task": "S4-folds",
+      "ai_proposal": "Freeze chronological membership and repaired response/reporting views; block raw-universe scenarios",
+      "evidence_checked": "docs/step4/acceptance.md",
+      "automated_verification": "Recovered exact logical digest; source/response identity checks",
+      "actual_human_decision": "pending; user authorised stage execution, not actuarial adoption or approval",
+      "implementation_and_measured_impact": "F2023 primary, reused F2024 challenge; corrupt bytes preserved",
+      "unresolved_uncertainty": "Snapshot financial vintages are not prospective"
+    },
+    {
+      "id": "S5-baselines",
+      "issue_or_task": "S5-baselines",
+      "ai_proposal": "Compare B0/B1/conditional B2 and compact Tweedie GLMs on fixed p1.5 contract",
+      "evidence_checked": "docs/step5/baseline-results.md",
+      "automated_verification": "Synthetic rate/exposure equivalence and real held-out acceptance",
+      "actual_human_decision": "pending; user authorised stage execution, not actuarial adoption or approval",
+      "implementation_and_measured_impact": "Primary mean deviance 116.741540/106.616810/107.938563/104.041285",
+      "unresolved_uncertainty": "Pooling/weights official implementation unresolved"
+    },
+    {
+      "id": "S6-features",
+      "issue_or_task": "S6-features",
+      "ai_proposal": "Retain only primary-fold supported blocks; reject vehicle/mileage and construction interaction",
+      "evidence_checked": "docs/step6/feature-results.md",
+      "automated_verification": "Fixed-settings block comparisons then frozen challenge",
+      "actual_human_decision": "pending; user authorised stage execution, not actuarial adoption or approval",
+      "implementation_and_measured_impact": "Selected mean deviance 103.496088/99.439308; D2 .113452/.089801",
+      "unresolved_uncertainty": "SI adoption and target assumptions remain pending"
+    },
+    {
+      "id": "S7-family",
+      "issue_or_task": "S7-family",
+      "ai_proposal": "Test bounded same-feature LightGBM; retain GLM rather than tune on challenge",
+      "evidence_checked": "docs/step7/lightgbm-results.md",
+      "automated_verification": "Exact IDs/reloads, primary uncertainty/calibration and tails",
+      "actual_human_decision": "pending; user authorised stage execution, not actuarial adoption or approval",
+      "implementation_and_measured_impact": "Primary LGBM deviance 104.122711 worse than GLM 103.496088; extra configs skipped",
+      "unresolved_uncertainty": "Challenge improved but cannot override primary; large loss sensitive"
+    },
+    {
+      "id": "S8-complexity",
+      "issue_or_task": "S8-complexity",
+      "ai_proposal": "Test one preregistered contents curvature; reject below-threshold gain",
+      "evidence_checked": "reports/step8/candidate-comparison.md",
+      "automated_verification": "101 preflight checks, two fits, seven promotion gates, paired uncertainty",
+      "actual_human_decision": "pending; user authorised stage execution, not actuarial adoption or approval",
+      "implementation_and_measured_impact": "Gain .001623 below .060401 threshold; decision retain_benchmark",
+      "unresolved_uncertainty": "Exploratory residuals; bootstrap conditional; gate7 is no-material-regression only"
+    },
+    {
+      "id": "S9-packaging",
+      "issue_or_task": "S9-packaging",
+      "ai_proposal": "Follow deterministic retain_benchmark precedence; full refit and independent clean reproduction only",
+      "evidence_checked": "prompts/step9/00-finalise-and-verify.md",
+      "automated_verification": "Pinned config, hashes, raw IDs, saved-model and CSV gates, failure tests",
+      "actual_human_decision": "pending; user authorised stage execution, not actuarial adoption or approval",
+      "implementation_and_measured_impact": "Measured production/reproduction results recorded in immutable manifest",
+      "unresolved_uncertainty": "Local proxy file only; no actuarial/final-Kaggle approval; no upload"
+    }
+  ]
+}

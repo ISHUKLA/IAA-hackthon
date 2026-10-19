@@ -30,6 +30,14 @@ step3 = [
   "scipy>=1.14,<2",
   "jsonschema>=4,<5",
 ]
+step7 = [
+  "lightgbm==4.6.0",
+  "numpy>=2,<3",
+  "pandas>=2.2,<3",
+  "pyarrow>=18",
+  "scikit-learn>=1.6,<2",
+  "joblib>=1.4,<2",
+]
 dev = ["pytest>=8,<10"]
 
 [project.scripts]

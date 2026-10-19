@@ -1,0 +1,30 @@
+{
+  "config_id": "step8-preflight-v1",
+  "status": "blocked_preflight",
+  "preflight_blockers": ["Step 7 evidence missing locally", "outputs/step4/folds/fold-membership.parquet fails Snappy/Parquet decoding"],
+  "execution_contract": "prompts/step8/00-conditional-complexity.md",
+  "available_leader": "S6_selected_compact_tweedie_glm",
+  "benchmark_status": "available S5/S6 leader only; Step 7 comparison and final Step 8 qualification pending",
+  "response_version": "repaired_observed_net_incurred_snapshot_2024-12-31",
+  "experiment_mode": "retrospective_snapshot_proxy",
+  "primary_fold": "F2023",
+  "challenge_fold": "F2024",
+  "challenge_status": "already inspected during S5 and S6; reused development challenge",
+  "required_step7_evidence": [
+    "experiment manifest identifying repaired inputs, response, folds, scorer, features, settings and code",
+    "complete unique held-out predictions for the primary and challenge folds",
+    "saved fitted artifacts, reproducibility checks and acceptance report",
+    "comparison with the frozen S6 GLM, calibration, tail diagnostics and runtime"
+  ],
+  "diagnosed_primary_weakness": null,
+  "candidate": null,
+  "causal_rationale": null,
+  "additional_parameters_or_features": [],
+  "budget": {"candidate_fits_authorized_before_preflight_passes": 0, "maximum_candidate_families_after_preflight": 1},
+  "evaluation_measures": ["paired primary-fold Tweedie deviance and D2 at power 1.5", "policy/customer-cluster uncertainty", "overall and line calibration", "tail and segment concentration", "single frozen challenge evaluation", "runtime and reproducibility"],
+  "promotion_thresholds": null,
+  "threshold_status": "not estimable before a credible Step 5-7 benchmark and one diagnosed weakness are established; no universal threshold invented",
+  "prohibited_information": ["held-out targets in preprocessing or prediction", "post-period contacts", "current claim outcomes or final status as features", "unverified weather or telematics timing", "historical financial snapshots that do not exist", "test labels or submission feedback"],
+  "decision_on_missing_prerequisites": "blocked",
+  "human_actuarial_review": "pending"
+}

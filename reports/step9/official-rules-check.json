@@ -1,0 +1,39 @@
+{
+  "checked_at_utc": "2026-10-19T12:58:30Z",
+  "retrieval": "fresh public-page attempt using web tool",
+  "sources": [
+    {
+      "url": "https://www.kaggle.com/competitions/iaa-ai-assisted-hackathon-2026-part-1/overview",
+      "status": "unresolved_live_access",
+      "result": "URL not accessible via tool; no page text retrieved"
+    },
+    {
+      "url": "https://www.kaggle.com/competitions/iaa-ai-assisted-hackathon-2026-part-1/data",
+      "status": "unresolved_live_access",
+      "result": "URL not accessible via tool; no page text retrieved"
+    },
+    {
+      "url": "https://www.kaggle.com/competitions/iaa-ai-assisted-hackathon-2026-part-1/evaluation",
+      "status": "unresolved_live_access",
+      "result": "URL not accessible via tool; no page text retrieved"
+    },
+    {
+      "url": "https://www.kaggle.com/competitions/iaa-ai-assisted-hackathon-2026-part-1/rules",
+      "status": "unresolved_live_access",
+      "result": "URL not accessible via tool; no page text retrieved"
+    }
+  ],
+  "prior_evidence": "docs/evidence/competition-sources.md and docs/step1/source-register.md: 18 October 2026 extracts; PRIOR verification, not a new retrieval",
+  "evaluation_route_followup": {
+    "checked_at_utc": "2026-10-19T13:06:31Z",
+    "url": "https://www.kaggle.com/competitions/iaa-ai-assisted-hackathon-2026-part-1/overview/evaluation",
+    "status": "unresolved_live_access",
+    "result": "The evaluation route recorded in the prior source register is also inaccessible; no text retrieved."
+  },
+  "deadline": "unresolved; no stale date inherited",
+  "daily_submission_limit": "unresolved; no stale limit inherited",
+  "final_selection_limit": "unresolved",
+  "terms_accepted": false,
+  "organisers_contacted": false,
+  "upload_status": "not_uploaded"
+}
