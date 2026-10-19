@@ -38,6 +38,10 @@ def main() -> int:
     targets.add_argument("--target-config", default="configs/target_construction.json")
     targets.add_argument("--scenario-config", default="configs/reserving_scenarios.json")
     targets.add_argument("--output-dir", default="outputs/step3/prepared")
+    repairs = commands.add_parser("repair-step2", help="Build auditable Step 2 policy and claim repairs")
+    repairs.add_argument("--data-dir", default=None)
+    repairs.add_argument("--config", default="configs/project.json")
+    repairs.add_argument("--output-dir", default="outputs/step2/repairs")
     args = parser.parse_args()
     try:
         config = json.loads(Path(args.config).read_text())
@@ -48,6 +52,13 @@ def main() -> int:
         print(json.dumps({"status": "not_configured", "action": "Set IAA_DATA_DIR or --data-dir"}))
         return 2
     root = Path(directory).expanduser().resolve()
+    if args.command == "repair-step2":
+        try:
+            from iaa_hackathon.step2_repairs import run_step2_repairs
+            result = run_step2_repairs(data_dir=root, output_dir=Path(args.output_dir).resolve(), project_root=Path.cwd())
+        except (ImportError, OSError, ValueError, KeyError) as exc:
+            print(json.dumps({"status": "error", "error": str(exc)}, indent=2)); return 2
+        print(json.dumps({"status": result["status"], "output_dir": str(Path(args.output_dir).resolve()), "logical_digest": result["logical_digest"], "raw_hashes_unchanged": result["raw_hashes_unchanged"]}, indent=2)); return 0
     if args.command == "build-targets":
         try:
             from iaa_hackathon.targets_pipeline import build_targets

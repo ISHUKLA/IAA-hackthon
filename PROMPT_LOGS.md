@@ -2,6 +2,8 @@
 
 Record concise evidence, not raw transcripts or secrets.
 
+| S2-repairs | 2026-10-19; supplied `02-step2-data-repairs.md` and `step2_data_repairs.patch` | Port applicable source-preserving repairs into the existing Step 2 layout after patch applicability check | Patch failed because equivalent package files already exist; its compiled artifacts and second dependency file were excluded. New repair build independently reproduced 2,409,311/626,639 policy rows; 604 duplicate groups/copies; 162,546 clean claims; 162,133 matched; 413 quarantined; 741,156,868.43 CU; all raw hashes unchanged; full suite passed | Audit report/bundle absent locally; financial basis and listed plausibility/timing definitions remain pending | Reviewable working-tree diff only; no model, commit or push |
+
 | ID | Task / prompt version | AI proposal | Verification and actual result | Human challenge/decision | Impact |
 | --- | --- | --- | --- | --- | --- |
 | S00 | 2026-10-18; `prompts/00-scaffold.md` SHA-256 `11ee3727cdf20d5e8e34f8ffbf8b996ee0ae49c0a1ca71ab5311135b937783ae` | Import the starter into the existing checkout, retain the standard-library doctor/scaffold checks and verify Step 0 only | Imported 38 files with no conflicts; Python 3.12.11 local wheel install passed after an editable `.pth` repeatedly acquired the macOS hidden flag; `make check` and CLI help exited 0; doctor reported unconfigured data with expected exit 2; Parquet, ZIP and prediction CSV exclusions passed; synthetic CSV remained allowed; `make step1-check` retained its expected exit 2 | Pending review; no human acceptance asserted | Executable Step 0 starting point; no data inspection, contract completion or pricing result |

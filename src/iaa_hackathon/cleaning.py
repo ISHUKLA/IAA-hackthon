@@ -203,14 +203,37 @@ def motor_quality_flags(frame: pd.DataFrame) -> pd.DataFrame:
     reason.loc[~opt_in.fillna(False) & ~score_missing] = "unexpected_non_opt_in_score"
     reason.loc[opt_in.isna()] = "unknown_opt_in_status"
     licence_start_age = frame["driver_age"] - frame["years_licensed"]
+    false = pd.Series(False, index=frame.index)
+    electric = frame["fuel_type"].astype("string").str.lower().eq("electric") if "fuel_type" in frame else false
+    ncb = frame["ncb_years"].gt(frame["years_licensed"]).fillna(False) if "ncb_years" in frame else false
+    mileage = frame["annual_mileage"].eq(0).fillna(False) if "annual_mileage" in frame else false
+    engine = (electric & frame["engine_size_cc"].gt(0)).fillna(False) if "engine_size_cc" in frame else false
     return pd.DataFrame(
         {
             "telematics_score_missing": score_missing.astype(bool),
             "telematics_missing_reason": reason,
             "licence_start_age_derived": licence_start_age,
+            "licensing_inconsistency_flag": licence_start_age.lt(16).fillna(False),
             "licence_start_age_below_14_flag": licence_start_age.lt(14).fillna(False),
+            "ncb_exceeds_licensed_flag": ncb,
+            "zero_mileage_flag": mileage,
+            "electric_engine_cc_conflict_flag": engine,
         },
         index=frame.index,
+    )
+
+
+def standardize_buildings_construction(values: pd.Series) -> pd.DataFrame:
+    """Preserve source labels while applying only the audited T/W equivalence."""
+    raw = values.copy()
+    standardized = raw.astype("string").str.lower()
+    standardized.loc[standardized.eq("t")] = "w"
+    return pd.DataFrame(
+        {
+            "construction_type_raw": raw,
+            "construction_type_standardized": standardized,
+            "smoke_alarms_missing_flag": pd.Series(False, index=values.index, dtype="boolean"),
+        }, index=values.index,
     )
 
 

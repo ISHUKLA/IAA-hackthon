@@ -199,6 +199,8 @@ def _clean_policy(
             divisor=float(parameters["proposed_divisor"]),
         )
         frame = pd.concat([frame, candidate], axis=1)
+        frame["sum_insured_repaired"] = frame["sum_insured_candidate"]
+        frame["sum_insured_repaired_flag"] = frame["sum_insured_candidate_status"].eq("inferred")
     else:
         frame["sum_insured_raw"] = pd.Series(pd.NA, index=frame.index, dtype="Float64")
         frame["sum_insured_candidate"] = pd.Series(pd.NA, index=frame.index, dtype="Float64")
@@ -206,9 +208,16 @@ def _clean_policy(
         frame["sum_insured_proposed_divisor"] = pd.Series(pd.NA, index=frame.index, dtype="Float64")
         frame["sum_insured_candidate_reason"] = "not_applicable_to_motor"
         frame["sum_insured_candidate_status"] = "not_applicable"
+        frame["sum_insured_repaired"] = pd.Series(pd.NA, index=frame.index, dtype="Float64")
+        frame["sum_insured_repaired_flag"] = pd.Series(pd.NA, index=frame.index, dtype="boolean")
 
     if line == "motor":
         frame = pd.concat([frame, motor_quality_flags(frame)], axis=1)
+    if line == "buildings" and "construction_type" in frame:
+        from iaa_hackathon.cleaning import standardize_buildings_construction
+        construction = standardize_buildings_construction(frame["construction_type"])
+        construction["smoke_alarms_missing_flag"] = frame["smoke_alarms"].isna().astype("boolean") if "smoke_alarms" in frame else pd.Series(False, index=frame.index, dtype="boolean")
+        frame = pd.concat([frame, construction], axis=1)
 
     frame["customer_join_status"] = _membership_status(frame["customer_id_clean"], customer_ids)
     frame["address_join_status"] = _membership_status(frame["address_id"], address_ids)
@@ -332,6 +341,7 @@ def _clean_policy(
         "exposure_clean_total": float(frame["exposure_clean"].sum()),
         "exposure_changed_rows": int(frame["exposure_changed"].sum()),
         "sum_insured_candidate_rows": int(frame["sum_insured_candidate_status"].eq("inferred").sum()),
+        "sum_insured_repaired_rows": int(frame["sum_insured_repaired_flag"].fillna(False).sum()),
         "customer_join_status": {str(k): int(v) for k, v in frame["customer_join_status"].value_counts().items()},
         "address_join_status": {str(k): int(v) for k, v in frame["address_join_status"].value_counts().items()},
         "weather_join_status": {str(k): int(v) for k, v in frame["weather_join_status"].value_counts().items()},
@@ -343,6 +353,10 @@ def _clean_policy(
             str(k): int(v) for k, v in frame["telematics_missing_reason"].value_counts(dropna=False).items()
         }
         reconciliation["licence_start_age_below_14_rows"] = int(frame["licence_start_age_below_14_flag"].sum())
+        for field in ("licensing_inconsistency_flag", "ncb_exceeds_licensed_flag", "zero_mileage_flag", "electric_engine_cc_conflict_flag"):
+            reconciliation[field] = int(frame[field].sum())
+    if line == "buildings" and "construction_type_standardized" in frame:
+        reconciliation["construction_standardized_rows"] = int(frame["construction_type"].astype("string").ne(frame["construction_type_standardized"]).sum())
     return frame, ledgers, reconciliation
 
 

@@ -58,3 +58,5 @@
 - Git state at S2-00 start: clean `main` at `1e4ce8f`, tracking `origin/main`. Current Step 2 changes remain uncommitted and unpushed; row-level outputs are ignored.
 
 Update with actual commands, outcomes and remaining questions after each prompt. Do not turn a planned activity into a completed one.
+
+- Data-repairs patch review, 19 October 2026: the supplied patch could not apply against the existing package layout and contained compiled artifacts/duplicate dependency management. Equivalent audited repairs were ported into the existing pandas/pyarrow workflow. The separate ignored repair build passed all supplied count gates and preserved every raw hash; no model, commit or push occurred.

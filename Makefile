@@ -1,12 +1,13 @@
 PYTHON ?= python
 
-.PHONY: help check doctor step1-check step2-check step2-acceptance prepare-data step3-check build-targets step3-acceptance target
+.PHONY: help check doctor step1-check step2-check step2-acceptance prepare-data repair-step2 step3-check build-targets step3-acceptance target
 
 DATA_DIR ?= $(IAA_DATA_DIR)
 STEP2_OUTPUT ?= outputs/step2/prepared
 STEP2_CONFIG ?= configs/cleaning.json
 STEP3_OUTPUT ?= outputs/step3/prepared
 STEP3_CONFIG ?= configs/target_construction.json
+STEP2_REPAIR_OUTPUT ?= outputs/step2/repairs
 SCENARIO_CONFIG ?= configs/reserving_scenarios.json
 
 help:
@@ -30,6 +31,9 @@ step2-acceptance:
 
 prepare-data:
 	PYTHONPATH=src $(PYTHON) -m iaa_hackathon prepare-data --data-dir "$(DATA_DIR)" --output-dir "$(STEP2_OUTPUT)" --cleaning-config "$(STEP2_CONFIG)"
+
+repair-step2:
+	PYTHONPATH=src $(PYTHON) -m iaa_hackathon repair-step2 --data-dir "$(DATA_DIR)" --output-dir "$(STEP2_REPAIR_OUTPUT)"
 
 step3-check:
 	PYTHONPATH=src $(PYTHON) scripts/step3_check.py
