@@ -118,3 +118,26 @@ reproduce-step9:
 
 step9-finalize:
 	PYTHONPATH=src $(PYTHON) scripts/step9.py finalize --data-dir "$(DATA_DIR)"
+
+.PHONY: step10-check step10-freeze step10-verify step10-review verify-part1-package reproduce-part1 step10-acceptance
+
+step10-freeze:
+	PYTHONPATH=src $(PYTHON) scripts/step10.py freeze
+
+step10-check:
+	PYTHONPATH=src $(PYTHON) scripts/step10.py check
+
+step10-verify:
+	PYTHONPATH=src $(PYTHON) scripts/step10.py verify --data-dir "$(DATA_DIR)"
+
+step10-review:
+	PYTHONPATH=src $(PYTHON) scripts/step10.py review --data-dir "$(DATA_DIR)"
+
+reproduce-part1:
+	PYTHONPATH=src $(PYTHON) scripts/step10.py reproduce --data-dir "$(DATA_DIR)"
+
+verify-part1-package: step10-verify
+	PYTHONPATH=src $(PYTHON) scripts/step10.py package
+
+step10-acceptance:
+	PYTHONPATH=src $(PYTHON) scripts/step10.py acceptance

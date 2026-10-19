@@ -1,0 +1,26 @@
+{
+  "config_id": "conditional-ultimate-bf-v1",
+  "status": "experimental_assumption_dependent_not_approved",
+  "valuation_date": "2024-12-31",
+  "mature_rate_years": [2021, 2022],
+  "folds": {
+    "F2023": {"training_years": [2021, 2022], "validation_year": 2023, "rate_and_delay_cutoff": "2022-12-31"},
+    "F2024": {"training_years": [2021, 2022, 2023], "validation_year": 2024, "rate_and_delay_cutoff": "2023-12-31"}
+  },
+  "full_rate_and_delay_cutoff": "2024-12-31",
+  "financial_basis": "incurred_to_date_minus_recorded_recoveries; paid_to_date_already_net_of_excess; recovery_netting_unconfirmed",
+  "method": "reported_net_incurred_plus_exposure_times_mature_peril_cost_rate_times_unreported_fraction",
+  "reporting_model": "right_truncated_discrete_geometric_by_line_peril",
+  "case_reserve_multiplier": 1.0,
+  "future_recovery_allowance": 0.0,
+  "cost_trend_factor": 1.0,
+  "assumptions": [
+    "case_estimates_are_unbiased_for_reported_claims",
+    "mature_2021_2022_net_cost_rate_is_transferable_to_later_periods_within_line_peril",
+    "reported_and_unreported_claims_have_equal_expected_net_cost_within_line_peril",
+    "geometric_reporting_delay_family_is_adequate",
+    "recorded_recoveries_are_not_already_netted_from_incurred",
+    "no_quantified_future_recovery_or_cost_trend_adjustment"
+  ],
+  "limitations": "Single end-2024 financial snapshot cannot verify monetary development, future recoveries, reserve adequacy or true ultimate; folds are retrospective monetary sensitivities, not prospective financial-vintage validation."
+}

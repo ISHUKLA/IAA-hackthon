@@ -1,0 +1,724 @@
+{
+  "review_id": "step10-final-quality-v1",
+  "review_type": "AI and automated evidence review; not independent human sign-off",
+  "rows": [
+    {
+      "id": "O01",
+      "domain": "Official requirements",
+      "requirement": "Current deadline and Part 1 schedule established",
+      "source": "current official overview/rules; Step 10 §1",
+      "status": "not_testable",
+      "evidence": [
+        "reports/step10/official-rules-check.json"
+      ],
+      "verification": "Fresh public requests at 2026-10-19 13:21:03 UTC returned no page text",
+      "limitation": "Prior 18 October dates are not fresh verification",
+      "action": "Supply current official page/extract and confirm schedule",
+      "owner": "competition entrant",
+      "critical": true
+    },
+    {
+      "id": "O02",
+      "domain": "Official requirements",
+      "requirement": "Current required deliverables and Part 1-specific timing established",
+      "source": "current official overview/data/evaluation/rules; Step 10 §10",
+      "status": "not_testable",
+      "evidence": [
+        "reports/step10/official-rules-check.json",
+        "docs/step1/source-register.md#register"
+      ],
+      "verification": "Compared current access failure with dated prior extracts",
+      "limitation": "Unknown current Part 1 deliverable timing is an explicit readiness blocker",
+      "action": "Provide current official instructions; verify whether report/video accompany Part 1",
+      "owner": "competition entrant",
+      "critical": true
+    },
+    {
+      "id": "O03",
+      "domain": "Official requirements",
+      "requirement": "Judging criteria and weights traceable",
+      "source": "quality brief; dated official O02/R01",
+      "status": "partial",
+      "evidence": [
+        "docs/step1/source-register.md#register",
+        "reports/step10/official-rules-check.json"
+      ],
+      "verification": "Prior source records support 40/25/20/15, equal Part 1/2 private scores within performance, plus panel judgement",
+      "limitation": "Current wording and numeric leaderboard/panel combination not verified",
+      "action": "Recheck official criteria; do not invent overall scoring formula",
+      "owner": "competition entrant",
+      "critical": false
+    },
+    {
+      "id": "O04",
+      "domain": "Official requirements",
+      "requirement": "Daily submission and final-selection rules known",
+      "source": "current official rules; Step 10 §1",
+      "status": "not_testable",
+      "evidence": [
+        "reports/step10/official-rules-check.json",
+        "docs/step1/source-register.md#register"
+      ],
+      "verification": "Separated old five/day plan, later ten/day and one-final-entry extract from current unknowns",
+      "limitation": "Neither old limit is asserted current; rules/overview hierarchy conflict unresolved",
+      "action": "Verify current limits and resolve material rules conflict before upload",
+      "owner": "competition entrant",
+      "critical": true
+    },
+    {
+      "id": "A01",
+      "domain": "Actuarial judgement",
+      "requirement": "Expected ultimate, expectation and policy-period units distinguished",
+      "source": "context objective; quality brief target construction",
+      "status": "pass",
+      "evidence": [
+        "docs/step1/problem-definition.md#expected-net-ultimate-cost",
+        "docs/part1/executive-summary.md"
+      ],
+      "verification": "Inspected output contract and explicit proxy-versus-ultimate language",
+      "limitation": "Definition does not make the fitted response ultimate",
+      "action": "Retain explicit distinctions",
+      "owner": "technical maintainer",
+      "critical": false
+    },
+    {
+      "id": "A02",
+      "domain": "Actuarial judgement",
+      "requirement": "Defensible ultimate target, not merely unadjusted observed incurred",
+      "source": "quality brief §1 target/development; context objective",
+      "status": "fail",
+      "evidence": [
+        "configs/final_model.json",
+        "docs/part1/limitations-and-assumptions.md#critical-target-gap"
+      ],
+      "verification": "Frozen scenario has no additional monetary IBNR/development/recovery/trend; one snapshot only",
+      "limitation": "Honest disclosure does not satisfy the ultimate-target quality requirement",
+      "action": "Return to Step 3/4 for supported basis/scenario work and human judgement; any changed candidate requires Step 9 anew",
+      "owner": "human actuary",
+      "critical": true
+    },
+    {
+      "id": "A03",
+      "domain": "Actuarial judgement",
+      "requirement": "Exposure repair reversible and applied once",
+      "source": "AGENTS data rules; quality brief data quality",
+      "status": "partial",
+      "evidence": [
+        "docs/step2/exposure-reconciliation.md",
+        "src/iaa_hackathon/baselines.py",
+        "outputs/step10/candidate-verification.json"
+      ],
+      "verification": "14,229 training discrepancies classified; source/test exposure preserved; saved-model period-cost equivalence checked",
+      "limitation": "Inclusive ACT/365 convention adoption remains pending",
+      "action": "Approve convention or return to Step 2; do not alter it here",
+      "owner": "human actuary",
+      "critical": false
+    },
+    {
+      "id": "A04",
+      "domain": "Actuarial judgement",
+      "requirement": "Loss-date linkage, repudiation mapping and duplicate treatment traceable",
+      "source": "context net loss basis; AGENTS data rules",
+      "status": "partial",
+      "evidence": [
+        "docs/step2/data-repairs.md",
+        "docs/step3/after-data-repairs-diagnostics.md"
+      ],
+      "verification": "604 exact non-ID duplicate copies removed; 160,432 accepted matched claims reconcile to 741,156,868.43 CU; 413 quarantined",
+      "limitation": "Duplicate adoption, repudiated/declined mapping and quarantine decisions remain provisional",
+      "action": "Review reversible rules and exclusions",
+      "owner": "human actuary",
+      "critical": false
+    },
+    {
+      "id": "A05",
+      "domain": "Actuarial judgement",
+      "requirement": "Recovery/excess basis established rather than double deducted",
+      "source": "quality brief net ultimate; Step 1 financial contract",
+      "status": "partial",
+      "evidence": [
+        "configs/final_model.json",
+        "outputs/step9/financial-diagnostics.json#financial_basis_sensitivity"
+      ],
+      "verification": "Incurred less recorded recoveries; no further excess deduction; 27,501,378.71 CU competing-basis difference measured",
+      "limitation": "Whether incurred already nets recoveries is not established; financial effect material",
+      "action": "Resolve field definitions or explicit defensible actuarial basis in Step 3; rebuild downstream if changed",
+      "owner": "human actuary",
+      "critical": true
+    },
+    {
+      "id": "A06",
+      "domain": "Actuarial judgement",
+      "requirement": "Reporting delay, open-claim maturity and monetary IBNR treated defensibly",
+      "source": "quality brief §1; context dataset",
+      "status": "partial",
+      "evidence": [
+        "docs/step3/after-data-repairs-diagnostics.md",
+        "outputs/step10/aggregate-review.json#peril_maturity"
+      ],
+      "verification": "Reviewed repaired BI/subsidence open/case balances and illustrative ±20% case arithmetic; fold-safe reporting fits exist",
+      "limitation": "Count completeness does not identify monetary IBNR, case adequacy or future recovery; no supported 2025 monetary bridge",
+      "action": "Return to Step 3/4 for defensible assumptions, not invented triangles or automatic loads",
+      "owner": "human actuary",
+      "critical": true
+    },
+    {
+      "id": "A07",
+      "domain": "Actuarial judgement",
+      "requirement": "Largest bodily-injury and tail sensitivity retained",
+      "source": "quality brief pricing/uncertainty; AGENTS audit rules",
+      "status": "pass",
+      "evidence": [
+        "docs/step6/feature-results.md",
+        "outputs/step6/features/diagnostics.json",
+        "docs/step7/lightgbm-results.md"
+      ],
+      "verification": "Primary retains 11,894,276.93 CU BI claim; fixed-prediction sensitivity gives S6 101.088331 vs 103.496088 mean deviance",
+      "limitation": "Not a cap, alternate fitted target or proof that the claim is erroneous",
+      "action": "Retain primary claim and disclose concentration",
+      "owner": "human actuary",
+      "critical": false
+    },
+    {
+      "id": "A08",
+      "domain": "Actuarial judgement",
+      "requirement": "Measured facts, interpretations and human judgement separated",
+      "source": "quality brief judgement; source precedence",
+      "status": "pass",
+      "evidence": [
+        "docs/assumptions.md",
+        "docs/part1/limitations-and-assumptions.md",
+        "reports/step9/ai-direction-log.json"
+      ],
+      "verification": "Checked pending human fields and distinct measured/candidate/unknown quantities",
+      "limitation": "Pending judgement is still a substantive gap",
+      "action": "Complete real review without retrospective sign-off",
+      "owner": "human reviewer",
+      "critical": false
+    },
+    {
+      "id": "A09",
+      "domain": "Actuarial judgement",
+      "requirement": "Sum-insured interpretation tested and reversible",
+      "source": "quality brief data quality; A04/A28/A34",
+      "status": "partial",
+      "evidence": [
+        "docs/step2/sum-insured-review.md",
+        "outputs/step9/financial-diagnostics.json#sum_insured_fixed_model_sensitivity"
+      ],
+      "verification": "2,797 training and 730 test candidates preserve raw fields; fixed-model raw-unit stress produces extreme extrapolation",
+      "limitation": "Unit interpretation unconfirmed; extrapolation is not credible forecast sensitivity",
+      "action": "Approve units or return to Step 2 and rebuild; no Step 10 correction",
+      "owner": "human actuary",
+      "critical": false
+    },
+    {
+      "id": "P01",
+      "domain": "Pricing and modelling",
+      "requirement": "Chronological folds appropriate for 2025-style rows",
+      "source": "quality brief validation design",
+      "status": "pass",
+      "evidence": [
+        "configs/validation.json",
+        "docs/step4/acceptance.md",
+        "outputs/step4/folds/fold-summary.json"
+      ],
+      "verification": "Verified original recovered membership digest and exact F2023/F2024 populations",
+      "limitation": "Temporal membership alone cannot restore historical financial vintages",
+      "action": "Keep folds fixed; preserve repaired universe",
+      "owner": "technical maintainer",
+      "critical": false
+    },
+    {
+      "id": "P02",
+      "domain": "Pricing and modelling",
+      "requirement": "Prospective validation and reused challenge limitations honest",
+      "source": "quality brief validation; A14/A25",
+      "status": "partial",
+      "evidence": [
+        "docs/part1/methodology.md#validation",
+        "MODEL_CARD.md#validation-and-limitations"
+      ],
+      "verification": "F2023 primary and F2024 reused development challenge explicitly labelled retrospective snapshot proxies",
+      "limitation": "Neither tests true ultimate or an untouched final holdout",
+      "action": "Human interpretation; new methodology belongs in earlier steps",
+      "owner": "human actuary",
+      "critical": false
+    },
+    {
+      "id": "P03",
+      "domain": "Pricing and modelling",
+      "requirement": "Leakage exclusions and train-only preprocessing enforced",
+      "source": "quality brief validation/governance",
+      "status": "pass",
+      "evidence": [
+        "configs/final_model.json",
+        "src/iaa_hackathon/baselines.py",
+        "tests/test_final_submission.py",
+        "outputs/step10/candidate-verification.json"
+      ],
+      "verification": "Exact allowlist; no IDs/outcomes/status/contacts/renewal/weather/monetary history; fitted imputer/vocabulary reload and synthetic exposure checks",
+      "limitation": "This verifies the frozen core; conditional features remain excluded, not proven prospectively available",
+      "action": "Retain exclusions; revisit timing only under new authorised modelling",
+      "owner": "technical maintainer",
+      "critical": false
+    },
+    {
+      "id": "P04",
+      "domain": "Pricing and modelling",
+      "requirement": "Transparent baselines and same-row paired comparisons",
+      "source": "quality brief modelling competence",
+      "status": "pass",
+      "evidence": [
+        "docs/step5/baseline-results.md",
+        "docs/step6/feature-results.md",
+        "outputs/step8/benchmark-frozen.json"
+      ],
+      "verification": "B0/B1/conditional B2/B3 and selected S6 compared on exact response/fold rows; no score-version mixing",
+      "limitation": "Premium comparator basis conditional; pooled scores provisional",
+      "action": "Preserve all baseline and negative results",
+      "owner": "technical maintainer",
+      "critical": false
+    },
+    {
+      "id": "P05",
+      "domain": "Pricing and modelling",
+      "requirement": "Tweedie power, units and exposure correct",
+      "source": "quality brief metric; Step 1 contract",
+      "status": "pass",
+      "evidence": [
+        "configs/final_model.json",
+        "src/iaa_hackathon/metrics.py",
+        "outputs/step10/candidate-verification.json"
+      ],
+      "verification": "Power 1.5; rate response/sqrt exposure training weights; one rate-times-exposure conversion; no floor/clipping",
+      "limitation": "Unweighted local objective is not confirmed official pooling",
+      "action": "Retain exact frozen formulation",
+      "owner": "technical maintainer",
+      "critical": false
+    },
+    {
+      "id": "P06",
+      "domain": "Pricing and modelling",
+      "requirement": "Official scoring weights/pooling and panel semantics established",
+      "source": "official metric prose; A01/A09",
+      "status": "partial",
+      "evidence": [
+        "docs/step1/source-register.md#exact-published-metric-and-submission-illustration",
+        "reports/step10/official-rules-check.json"
+      ],
+      "verification": "Separated published power/name from standard-library semantics and provisional pooling",
+      "limitation": "No official scorer code or full panel combination verified",
+      "action": "Verify primary scorer/rules before official-equivalence claims",
+      "owner": "competition entrant",
+      "critical": false
+    },
+    {
+      "id": "P07",
+      "domain": "Pricing and modelling",
+      "requirement": "Calibration by line/region/segment/new-returning and tails inspected",
+      "source": "quality brief calibration checklist",
+      "status": "pass",
+      "evidence": [
+        "outputs/step10/aggregate-review.json#region_calibration",
+        "outputs/step9/financial-diagnostics.json",
+        "outputs/step6/features/diagnostics.json"
+      ],
+      "verification": "Added post-selection line/region holdout A/E using guarded joins, without changing predictions; existing decile/segment/tail and return diagnostics inspected",
+      "limitation": "Diagnostics are not a claim of good calibration; motor F2024 A/E 0.803431 remains material",
+      "action": "Human review of calibration/maturity; no automatic scaling",
+      "owner": "human actuary",
+      "critical": false
+    },
+    {
+      "id": "P08",
+      "domain": "Pricing and modelling",
+      "requirement": "Complexity promoted only on supported evidence",
+      "source": "quality brief model transparency; conditional comparison",
+      "status": "pass",
+      "evidence": [
+        "docs/step7/lightgbm-results.md",
+        "reports/step8/candidate-comparison.md",
+        "outputs/step8/decision.json"
+      ],
+      "verification": "LightGBM primary worsened; one contents coefficient below preregistered threshold and CI crosses zero; retained S6",
+      "limitation": "Does not prove universal GLM superiority; exploratory/selection uncertainty remains",
+      "action": "Do not reopen selection during packaging",
+      "owner": "technical maintainer",
+      "critical": false
+    },
+    {
+      "id": "U01",
+      "domain": "Effective AI use",
+      "requirement": "Real prompts, proposals, corrections and decisions recorded",
+      "source": "quality brief effective AI checklist",
+      "status": "pass",
+      "evidence": [
+        "PROMPT_LOGS.md",
+        "docs/part1/ai-direction-log.md",
+        "reports/step9/ai-direction-log.json"
+      ],
+      "verification": "Mapped actual prompt files and checked repair, fold recovery, challenger and provenance-correction episodes",
+      "limitation": "No complete human review record exists",
+      "action": "Keep actual events and source links",
+      "owner": "technical maintainer",
+      "critical": false
+    },
+    {
+      "id": "U02",
+      "domain": "Effective AI use",
+      "requirement": "AI claims verified against data/code/primary sources",
+      "source": "quality brief supervised delegation",
+      "status": "partial",
+      "evidence": [
+        "docs/part1/ai-use-and-human-oversight.md",
+        "outputs/step10/candidate-verification.json",
+        "reports/step10/official-rules-check.json"
+      ],
+      "verification": "Numerical code/hash/test claims checked; earlier source retrieval distinguished from current failure",
+      "limitation": "Current official rules and exact professional-standard interpretations unavailable",
+      "action": "Obtain missing primary evidence; no invented confirmation",
+      "owner": "human reviewer",
+      "critical": false
+    },
+    {
+      "id": "U03",
+      "domain": "Effective AI use",
+      "requirement": "Concrete evidenced human accept/reject/modify judgement",
+      "source": "quality brief §2 human challenge; context oversight",
+      "status": "fail",
+      "evidence": [
+        "docs/part1/ai-direction-log.md",
+        "reports/step9/ai-direction-log.json"
+      ],
+      "verification": "Reviewed user workflow authorisations and all pending actuarial fields; no actual technical sign-off found",
+      "limitation": "Execution and Git-publication requests are not actuarial acceptance or independent review",
+      "action": "Record genuine human challenge/decision and consequence; never convert AI checks to human oversight",
+      "owner": "human reviewer",
+      "critical": true
+    },
+    {
+      "id": "U04",
+      "domain": "Effective AI use",
+      "requirement": "No fabricated approval, time savings or AI contribution",
+      "source": "quality brief weak/strong AI evidence",
+      "status": "pass",
+      "evidence": [
+        "docs/part1/ai-use-and-human-oversight.md",
+        "PROMPT_LOGS.md"
+      ],
+      "verification": "No invented savings, leaderboard outcome, approval or independent-review claim; AI corrections labelled automated",
+      "limitation": "Honest pending state does not satisfy missing human review",
+      "action": "Keep human checklist unchecked",
+      "owner": "technical maintainer",
+      "critical": false
+    },
+    {
+      "id": "U05",
+      "domain": "Effective AI use",
+      "requirement": "Auditable usable workflow, not narrative alone",
+      "source": "quality brief effective AI/usefulness",
+      "status": "partial",
+      "evidence": [
+        "docs/part1/reproducibility.md",
+        "outputs/step10/reproduction.json"
+      ],
+      "verification": "Working Make commands, real tests, exact isolated rebuild and concrete artifacts",
+      "limitation": "Git clone alone lacks deliberately private repaired/frozen evidence bundle",
+      "action": "Arrange authorised private handoff of prerequisites; do not publish row data",
+      "owner": "technical maintainer",
+      "critical": false
+    },
+    {
+      "id": "G01",
+      "domain": "Trust and reproducibility",
+      "requirement": "Raw data unchanged; repaired layers traceable",
+      "source": "quality brief data/model governance",
+      "status": "pass",
+      "evidence": [
+        "outputs/step2/repairs/repair-audit.json",
+        "outputs/step10/candidate-verification.json"
+      ],
+      "verification": "Rehashed eleven raw files and frozen repaired artifacts through S9 preflight; original fields remain",
+      "limitation": "Hash continuity does not settle repair/financial judgement",
+      "action": "Preserve raw read-only inputs",
+      "owner": "technical maintainer",
+      "critical": false
+    },
+    {
+      "id": "G02",
+      "domain": "Trust and reproducibility",
+      "requirement": "Frozen file/config/model/code/environment identities reproducible",
+      "source": "quality brief one-command reproduction",
+      "status": "pass",
+      "evidence": [
+        "outputs/step10/frozen-candidate.json",
+        "outputs/step10/reproduction.json"
+      ],
+      "verification": "Fresh output namespace and snapshotted numerical code; candidate/model/schema byte equality checked",
+      "limitation": "Exact on pinned local environment; not a cross-platform guarantee",
+      "action": "Use controlled local artifacts and pinned environment",
+      "owner": "technical maintainer",
+      "critical": false
+    },
+    {
+      "id": "G03",
+      "domain": "Trust and reproducibility",
+      "requirement": "Historical provenance honest after subsequent Git commit",
+      "source": "quality brief version control/governance",
+      "status": "pass",
+      "evidence": [
+        "outputs/step9/submission-manifest.json",
+        "outputs/step10/candidate-verification.json",
+        "docs/part1/reproducibility.md#provenance"
+      ],
+      "verification": "Original dirty-state snapshot verified; current committed numerical source hashes match; historical manifests not rewritten",
+      "limitation": "Current documentation differs intentionally from generation-time snapshot",
+      "action": "Maintain separate current handoff inventory",
+      "owner": "technical maintainer",
+      "critical": false
+    },
+    {
+      "id": "G04",
+      "domain": "Trust and reproducibility",
+      "requirement": "Meaningful invariant/leakage/alignment/reload/package tests",
+      "source": "quality brief deterministic verification",
+      "status": "pass",
+      "evidence": [
+        "tests/test_final_submission.py",
+        "tests/test_part1_handoff.py",
+        "outputs/step10/tests.json"
+      ],
+      "verification": "Run selected existing boundary/fold/reporting gates plus adversarial package/freeze/readiness tests; no zero-test pass",
+      "limitation": "Tests cannot certify actuarial appropriateness",
+      "action": "Retain machine/human distinction",
+      "owner": "technical maintainer",
+      "critical": false
+    },
+    {
+      "id": "G05",
+      "domain": "Trust and reproducibility",
+      "requirement": "No raw data, secrets, personal records, machine paths or caches in review inventory",
+      "source": "quality brief trust; Step 10 packaging",
+      "status": "pass",
+      "evidence": [
+        "outputs/step10/package-inventory.json",
+        "src/iaa_hackathon/part1_handoff.py"
+      ],
+      "verification": "Allowlisted text payload, suffix/path/symlink/size/secret/home-path checks and SHA inventory verification",
+      "limitation": "Heuristic secret scan is not a formal DLP guarantee; restricted source assets and CSV remain separate local references",
+      "action": "Inspect inventory before any separately authorised sharing",
+      "owner": "technical maintainer",
+      "critical": false
+    },
+    {
+      "id": "G06",
+      "domain": "Trust and reproducibility",
+      "requirement": "No unlicensed/prohibited external data or code represented as approved",
+      "source": "quality brief trust; competition data terms",
+      "status": "partial",
+      "evidence": [
+        "requirements/step7-py312.lock",
+        "docs/part1/limitations-and-assumptions.md#licensing-and-terms"
+      ],
+      "verification": "No new external dataset, copied third-party code or vendored dependency added; installed dependency metadata recorded",
+      "limitation": "Current competition terms and complete legal dependency review not established; no new project licence chosen",
+      "action": "Confirm applicable data/code rights before publication/submission",
+      "owner": "competition entrant",
+      "critical": false
+    },
+    {
+      "id": "G07",
+      "domain": "Trust and reproducibility",
+      "requirement": "CI execution independently established",
+      "source": "quality brief automated CI evidence",
+      "status": "not_testable",
+      "evidence": [
+        ".github/workflows/checks.yml",
+        "docs/part1/reproducibility.md"
+      ],
+      "verification": "Inspected read-only CI definition; local tests actually run",
+      "limitation": "GitHub Actions result not inspected; local passing tests are not CI success",
+      "action": "Review GitHub CI separately if needed",
+      "owner": "technical maintainer",
+      "critical": false
+    },
+    {
+      "id": "G08",
+      "domain": "Trust and reproducibility",
+      "requirement": "Failure states, assumptions and oversight triggers visible",
+      "source": "quality brief governance",
+      "status": "pass",
+      "evidence": [
+        "docs/part1/limitations-and-assumptions.md",
+        "reports/step10/final-readiness.md",
+        "docs/part1/human-review-checklist.md"
+      ],
+      "verification": "Critical rows cause blocked status without averaging; failed invariant overrides to failed_verification",
+      "limitation": "Readiness remains blocked despite correct file format",
+      "action": "Resolve blockers at their responsible stage",
+      "owner": "human reviewer",
+      "critical": false
+    },
+    {
+      "id": "C01",
+      "domain": "Communication",
+      "requirement": "First-page narrative leads with task/model/results/corrections/limits",
+      "source": "quality brief page-one checklist; context layout conflict",
+      "status": "pass",
+      "evidence": [
+        "docs/part1/executive-summary.md"
+      ],
+      "verification": "Inspected lead sections for all six required facts and explicit no-upload status",
+      "limitation": "Markdown opening is not evidence of five-page rendered layout",
+      "action": "Use as lead for later final report; original brief unchanged",
+      "owner": "technical maintainer",
+      "critical": false
+    },
+    {
+      "id": "C02",
+      "domain": "Communication",
+      "requirement": "Terminology, quantities and current cards internally consistent",
+      "source": "quality brief communication; context cards",
+      "status": "pass",
+      "evidence": [
+        "DATA_CARD.md",
+        "SYSTEM_CARD.md",
+        "MODEL_CARD.md",
+        "docs/part1/methodology.md"
+      ],
+      "verification": "Added current repaired-universe summaries; retained earlier universe as dated history; annual rate vs period loss explicit",
+      "limitation": "Original briefs preserve unverified/historical claims; professional compliance not asserted",
+      "action": "Use current Part 1 narrative for handoff",
+      "owner": "technical maintainer",
+      "critical": false
+    },
+    {
+      "id": "C03",
+      "domain": "Communication",
+      "requirement": "Evidence tables communicate decisions to actuarial/technical reviewers",
+      "source": "quality brief communication",
+      "status": "pass",
+      "evidence": [
+        "docs/part1/results-and-diagnostics.md",
+        "docs/part1/executive-summary.md",
+        "docs/part1/reproducibility.md"
+      ],
+      "verification": "Exact folds, response, totals, D2/A/E and rejected candidates plus runnable commands",
+      "limitation": "No hidden-test score or ultimate calibration evidence exists",
+      "action": "Review with human users before external presentation",
+      "owner": "human reviewer",
+      "critical": false
+    },
+    {
+      "id": "C04",
+      "domain": "Communication",
+      "requirement": "Final report satisfies five-page limit",
+      "source": "context written deliverable; quality brief §4",
+      "status": "fail",
+      "evidence": [
+        "docs/part1/executive-summary.md",
+        "reports/step10/issues.json"
+      ],
+      "verification": "Created concise evidence-linked Markdown set; no final paginated report is present or page-count tested",
+      "limitation": "Markdown file count is not report page count; current Part 1 due timing unknown",
+      "action": "Assemble and visually verify final report when deliverable requirements confirmed",
+      "owner": "competition entrant",
+      "critical": false
+    },
+    {
+      "id": "C05",
+      "domain": "Communication",
+      "requirement": "Live pipeline video satisfies five-minute limit",
+      "source": "context video deliverable; quality brief §4",
+      "status": "fail",
+      "evidence": [
+        "reports/step10/issues.json",
+        "docs/part1/reproducibility.md"
+      ],
+      "verification": "No video artifact supplied/created or duration verified; runnable pipeline available",
+      "limitation": "No claim of video completion or compulsory timing at Part 1",
+      "action": "Record and time a real demo when scope/requirements confirmed",
+      "owner": "competition entrant",
+      "critical": false
+    },
+    {
+      "id": "C06",
+      "domain": "Communication",
+      "requirement": "Professional-standard compliance supported, not inferred from cards/SHAP",
+      "source": "context standards claims; A08",
+      "status": "not_testable",
+      "evidence": [
+        "docs/assumptions.md",
+        "docs/part1/limitations-and-assumptions.md#professional-claims"
+      ],
+      "verification": "Checked that current narrative disclaims unverified mandatory cards/SHAP/ensemble/ISAP compliance",
+      "limitation": "Exact professional standards not fully checked in this work",
+      "action": "Qualified human to assess relevant standards; do not fabricate compliance",
+      "owner": "human actuary",
+      "critical": false
+    },
+    {
+      "id": "C07",
+      "domain": "Communication",
+      "requirement": "Architecture/page-one conflicts preserved with decision authority",
+      "source": "context explicit choices vs quality brief; A12/A13",
+      "status": "partial",
+      "evidence": [
+        "docs/part1/methodology.md",
+        "docs/decisions.md",
+        "context.md"
+      ],
+      "verification": "Original briefs unmodified; latest S8/S9 precedence and front-loaded summary explained",
+      "limitation": "Human final architecture/report-layout approval not recorded",
+      "action": "Confirm final communication/architecture choices without inventing approval",
+      "owner": "human reviewer",
+      "critical": false
+    },
+    {
+      "id": "H01",
+      "domain": "Part 2 handoff",
+      "requirement": "Concrete schema/distribution/units/status/maturity adaptation handoff",
+      "source": "context Part 2 ambition; quality brief adaptation",
+      "status": "pass",
+      "evidence": [
+        "docs/part2/handoff-from-part1.md"
+      ],
+      "verification": "Documented frozen identifiers, reusable controls, tests, assumption retesting and ordered adaptation",
+      "limitation": "Checklist is a plan, not observed Part 2 success",
+      "action": "Start only on separate instruction with actual Part 2 inputs",
+      "owner": "technical maintainer",
+      "critical": false
+    },
+    {
+      "id": "H02",
+      "domain": "Part 2 handoff",
+      "requirement": "No blind reuse of Part 1 corrections or fitted models",
+      "source": "quality brief static Part 2 pitfall",
+      "status": "pass",
+      "evidence": [
+        "docs/part2/handoff-from-part1.md"
+      ],
+      "verification": "Explicit prohibition and minimum new-market evidence; no Part 2 processing invoked",
+      "limitation": "Part 1-specific scale/ID/status/delay conventions may fail elsewhere",
+      "action": "Re-establish every contract before modelling Part 2",
+      "owner": "human reviewer",
+      "critical": false
+    },
+    {
+      "id": "H03",
+      "domain": "Part 2 handoff",
+      "requirement": "Measured Part 2 adaptation/leaderboard performance",
+      "source": "context objective; quality brief 40% category",
+      "status": "not_applicable",
+      "evidence": [
+        "docs/part2/handoff-from-part1.md"
+      ],
+      "verification": "Part 2 is outside this request and not executed",
+      "limitation": "Unseen data and outcomes; no performance claim",
+      "action": "Execute a separately authorised future workflow",
+      "owner": "competition entrant",
+      "critical": false
+    }
+  ]
+}

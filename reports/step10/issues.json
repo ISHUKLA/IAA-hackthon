@@ -1,0 +1,85 @@
+{
+  "issues": [
+    {
+      "id": "M-SCAN-RESOLVED",
+      "type": "mechanical packaging defect",
+      "critical": false,
+      "description": "The first inventory check rejected its own generic temporary-path detection regex, not an actual private path; the command failed closed and was not reported as a pass.",
+      "owner": "technical maintainer",
+      "action": "Resolved by requiring concrete two-level temporary-directory components, retaining real private-path rejection and adding own-source plus concrete-temporary-path regression tests. Re-run package and frozen-file gates; no numerical source/model/CSV change.",
+      "resolution_status": "resolved: 100 targeted tests, 186 full tests, frozen-file/package verification and blocked-state acceptance passed; original failed command preserved locally"
+    },
+    {
+      "id": "B-RULES",
+      "type": "unresolved assumption",
+      "critical": true,
+      "description": "Current official deadline, deliverables/Part 1 timing and submission/final-selection limits cannot be verified",
+      "owner": "competition entrant",
+      "action": "Supply current official page/extract; resolve any material hierarchy conflict"
+    },
+    {
+      "id": "B-TARGET",
+      "type": "methodological gap",
+      "critical": true,
+      "description": "Observed incurred proxy has no supported monetary ultimate bridge and uncertain incurred/recovery basis",
+      "owner": "human actuary",
+      "action": "Resolve Step 3/4 target/basis judgement; any changed response/model/predictions requires earlier-stage work and a new Step 9 candidate"
+    },
+    {
+      "id": "B-REVIEW",
+      "type": "human decision pending",
+      "critical": true,
+      "description": "No actual actuarial accept/reject/modify oversight or final model/basis approval recorded",
+      "owner": "human reviewer",
+      "action": "Review evidence, challenge assumptions and record real decisions; AI must not sign"
+    },
+    {
+      "id": "D-CARDS",
+      "type": "documentation gap",
+      "critical": false,
+      "description": "README/Data/System cards still described early stages",
+      "owner": "technical maintainer",
+      "action": "Add current summaries; retain historical sections; no numerical change"
+    },
+    {
+      "id": "D-REPORT",
+      "type": "documentation gap",
+      "critical": false,
+      "description": "Final paginated <=5-page report not produced or verified",
+      "owner": "competition entrant",
+      "action": "Confirm timing, assemble and visually check report; Markdown is only narrative source"
+    },
+    {
+      "id": "D-VIDEO",
+      "type": "missing evidence",
+      "critical": false,
+      "description": "No <=5-minute live-demo video artifact/duration verification",
+      "owner": "competition entrant",
+      "action": "Confirm timing and create/time real demo under separate scope"
+    },
+    {
+      "id": "A-REPAIRS",
+      "type": "unresolved assumption",
+      "critical": false,
+      "description": "Exposure convention, sum-insured inferred units, deduplication and quarantine treatment remain pending",
+      "owner": "human actuary",
+      "action": "Accept evidence or return to Step 2/3; no silent changes in Step 10"
+    },
+    {
+      "id": "A-RIGHTS",
+      "type": "unresolved assumption",
+      "critical": false,
+      "description": "Current data terms and comprehensive dependency/professional-standard compliance review incomplete",
+      "owner": "competition entrant and human actuary",
+      "action": "Verify primary terms/standards before claims or external sharing"
+    },
+    {
+      "id": "M-PORTABILITY",
+      "type": "mechanical packaging limitation",
+      "critical": false,
+      "description": "Reproduction needs controlled private repaired/frozen evidence, not only public Git files; historical Step 9 manifest contains private absolute paths",
+      "owner": "technical maintainer",
+      "action": "Keep historical manifest unchanged; use relative-path handoff inventory and explicitly list external prerequisites; no private artifact upload"
+    }
+  ]
+}

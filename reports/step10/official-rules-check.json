@@ -1,0 +1,49 @@
+{
+  "checked_at_utc": "2026-10-19T13:21:03Z",
+  "method": "fresh public-page requests; no page text retrieved",
+  "sources": [
+    {
+      "url": "https://www.kaggle.com/competitions/iaa-ai-assisted-hackathon-2026-part-1/overview",
+      "status": "unresolved_live_access",
+      "result": "URL not accessible via retrieval tool"
+    },
+    {
+      "url": "https://www.kaggle.com/competitions/iaa-ai-assisted-hackathon-2026-part-1/data",
+      "status": "unresolved_live_access",
+      "result": "URL not accessible via retrieval tool"
+    },
+    {
+      "url": "https://www.kaggle.com/competitions/iaa-ai-assisted-hackathon-2026-part-1/overview/evaluation",
+      "status": "unresolved_live_access",
+      "result": "URL not accessible via retrieval tool"
+    },
+    {
+      "url": "https://www.kaggle.com/competitions/iaa-ai-assisted-hackathon-2026-part-1/rules",
+      "status": "unresolved_live_access",
+      "result": "URL not accessible via retrieval tool"
+    }
+  ],
+  "current_requirements": {
+    "deadline": null,
+    "required_deliverables": null,
+    "judging_criteria_and_weights": null,
+    "daily_submission_limit": null,
+    "final_entry_selection_rules": null,
+    "part1_specific_instructions": null
+  },
+  "prior_verified_extracts": {
+    "date": "2026-10-18",
+    "source": "docs/step1/source-register.md#register",
+    "status": "prior verification, NOT current retrieval",
+    "deliverables": "Prior evidence: prediction files, written report first 5 pages, video first 5 minutes, version-controlled code; precise current Part 1 timing unresolved",
+    "criteria": "Prior evidence: performance/adaptation 40%, effective AI use 25%, trust/guardrails 20%, communication 15%; score/panel formula unverified",
+    "limits": "Older plan says five/day; later prior official extract says ten/day and one final; no current limit asserted",
+    "target": "Expected net ultimate policy-period cost; current frozen model is explicitly an observed snapshot proxy",
+    "metric": "Tweedie D² score (power = 1.5); exact pooling/weights not established",
+    "conflict": "Overview/competition-specific judging versus general private-leaderboard-only wording"
+  },
+  "terms_accepted": false,
+  "organisers_contacted": false,
+  "upload_status": "not_uploaded",
+  "readiness_effect": "critical current official requirements unresolved; blocks upload-readiness claim"
+}

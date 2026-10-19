@@ -1,5 +1,11 @@
 # Decision log
 
+## S10-001 — blocked upload readiness, frozen candidate preserved, 19 October 2026
+
+The Step 10 quality review is complete locally but readiness is blocked. The 44 evidence-linked criteria retain critical missing current official requirements, the observed-proxy versus ultimate target/basis gap and actual human actuarial review. A correct format/exact reproduction does not turn those into passes; no averages are used. The separate machine/package acceptance passed with 100 targeted and 186 full tests, exact isolated three-model reproduction and unchanged S9 hashes. The 626,639-row candidate remains 189,554,001.45592618 CU, SHA-256 dfb3e565d97f0a4a597ab3051b6cffd616da5022aaf8da10aa0736db436e6274.
+
+Documentation/card/README histories were clarified, not erased. Region/peril/schema review adds aggregate evidence without changing a predictor or target. A package-scanner false positive was corrected and reverified; the original failed command is retained in local failure evidence. The narrative, AI direction log, unchecked checklist, Part 2 adaptation plan and relative-path inventory/manifest are controlled local handoff artifacts. No final paginated report/video, professional compliance, human sign-off or upload readiness is invented. Stop after Step 10; rules/human decisions and any earlier-stage methodology work require real resolution. No commit/push/upload/final entry/Part 2 execution occurred in this step.
+
 ## S9-001 — frozen S6 local proxy candidate, 19 October 2026
 
 Step 8 `retain_benchmark` deterministically selects `S6_selected_compact_tweedie_glm`; no rejected challenger, new feature, blend, response change or recalibration is adopted. The frozen final config uses all 2021–2024 repaired rows and the exact observed snapshot response. Three full-data fits and an independent clean build produced identical saved artifacts and a 626,639-row sample-order CSV; total 189,554,001.45592618 CU, SHA-256 `dfb3e565d97f0a4a597ab3051b6cffd616da5022aaf8da10aa0736db436e6274`. Status is `ready_for_human_review`, not actuarially approved or verified ultimate.

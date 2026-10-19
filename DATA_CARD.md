@@ -1,4 +1,16 @@
-# Data Card — Step 3 claim/target status
+# Data Card — current repaired Part 1 reference and history
+
+## Current authoritative layer — Steps 2 repairs through 10
+
+Current modelling consumes only outputs/step2/repairs, not the old raw-claim Step 3 target universe. It preserves 2,409,311 training/626,639 test policy rows, separately retains raw and derived fields, repairs 123,664 motor references and 14,229 training exposures, and exposes 2,797 train/730 test inferred SI repairs. Exact non-claim-ID equality removed 604 duplicate copies, leaving 162,546 clean claims: 162,133 matched, 413 quarantined. Accepted open/closed claims number 160,432 and reconcile to 741,156,868.43 CU under the provisional incurred-less-recorded-recoveries interpretation. Test exposure is unchanged.
+
+Step 4 repaired response/reporting views and recovered frozen membership share this claim universe. S5–S9 use the explicitly named `repaired_observed_net_incurred_snapshot_2024-12-31`, not true ultimate. Step 10 rehashes raw/repaired identities, preserves the frozen file/models and adds aggregate region/BI/subsidence review only. Raw files, row ledgers, claims, model tables and predictions remain outside Git. The complete current narrative is docs/part1/methodology.md and limitations-and-assumptions.md; exact hashes are in configs/final_model.json and the local Step 9/10 manifests.
+
+Human adoption of ACT/365, SI units, deduplication/quarantine and financial basis remains pending. One end-2024 valuation does not identify monetary IBNR, ultimate case adequacy, future recoveries or trend. Current data terms remain unverified. This card is evidence navigation, not approval or professional compliance.
+
+## Historical stage descriptions below
+
+The following earlier records are retained for audit continuity. In particular, the 744,330,677.04 CU raw-claim Step 3 total is NOT the repaired modelling response and must never be mixed with it.
 
 ## Provenance and identity
 
