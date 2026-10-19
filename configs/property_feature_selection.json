@@ -1,0 +1,22 @@
+{
+  "selection_id": "property-address-primary-F2023-v1",
+  "status": "experimental_candidate_only_not_final_entry",
+  "target": "conditional_ultimate_bf_v1_assumption_dependent",
+  "selection_fold": "F2023",
+  "challenge_fold": "F2024",
+  "chosen_case_by_line": {
+    "motor": "unchanged_conditional_ultimate_v1",
+    "buildings": "all_six",
+    "contents": "geography_three"
+  },
+  "observed_results_sha256": "5600eea0d5b632671df94e140f6cd84d00ae3183b08111765002b8931da253d7",
+  "conditional_results_sha256": "4e04f5f02247015553a2ad4b47b4c78d16635b3375f215d29e2f237f34083c9b",
+  "frozen_S6_feature_code_unchanged": true,
+  "reason": "On the main 2023 fold, all six address fields were best for buildings; the three geography fields were marginally better than all six for contents. Both selected cases also improved the 2024 challenge on the same constructed target. The 2024 result did not choose the features.",
+  "unresolved": [
+    "High flood-zone actual/expected ratios remain materially above one.",
+    "Only a single current address snapshot is provided; past address versions are unavailable.",
+    "The conditional financial target is not observed ultimate and requires human actuarial review.",
+    "No 2025 outcomes are supplied, so 2025 D2 is unmeasurable."
+  ]
+}

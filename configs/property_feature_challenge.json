@@ -1,0 +1,33 @@
+{
+  "config_id": "property-address-feature-challenge-v1",
+  "status": "experimental_not_promoted",
+  "baseline": "frozen_S6_compact_tweedie_glm",
+  "targets": {
+    "observed": "repaired_observed_net_incurred_snapshot_2024-12-31",
+    "conditional": "conditional_ultimate_bf_v1_assumption_dependent"
+  },
+  "primary_fold": "F2023",
+  "challenge_fold": "F2024",
+  "lines": ["buildings", "contents"],
+  "source": "addresses.parquet joined many-to-one on address_id; no target or post-period fields",
+  "feature_groups": {
+    "flood_zone": ["flood_zone"],
+    "elevation_m": ["elevation_m"],
+    "distance_to_river_km": ["distance_to_river_km"],
+    "geography_three": ["flood_zone", "elevation_m", "distance_to_river_km"],
+    "property_three": ["bedrooms", "property_type", "year_built"],
+    "all_six": ["flood_zone", "elevation_m", "distance_to_river_km", "bedrooms", "property_type", "year_built"]
+  },
+  "F2023_cases": ["flood_zone", "elevation_m", "distance_to_river_km", "geography_three", "property_three", "all_six"],
+  "F2024_cases": ["geography_three", "property_three", "all_six"],
+  "conditional_cases": ["geography_three", "property_three", "all_six"],
+  "settings": "reuse frozen S6 alpha=1, Tweedie power=1.5, log link, max_iter=100, training-only preprocessing and sqrt(exposure) rate weighting",
+  "flood_zone_encoding": "categorical zone_1..zone_5 plus explicit missing",
+  "selection_rule": "compare within the same line, fold and target; consider F2023 first and use F2024 only as a frozen challenge, never as a 2025 score",
+  "limitations": [
+    "One supplied address snapshot has no historical address-version timestamps.",
+    "Both fold financial targets use end-2024 claim valuations; neither is realised ultimate.",
+    "The conditional target depends on unverified financial and monetary IBNR assumptions.",
+    "2025 outcomes are unavailable, so 2025 D2 cannot be measured."
+  ]
+}

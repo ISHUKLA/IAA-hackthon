@@ -1,0 +1,26 @@
+{
+  "config_id": "motor-ncb-customer-region-challenge-v1",
+  "status": "experimental_not_promoted",
+  "primary_fold": "F2023",
+  "challenge_fold": "F2024",
+  "targets": ["observed", "conditional"],
+  "cases": {
+    "driver_age_only": {"mode": "univariate", "extras": ["driver_age"]},
+    "ncb_only": {"mode": "univariate", "extras": ["ncb_years"]},
+    "s6_plus_ncb": {"mode": "s6", "extras": ["ncb_years"]},
+    "plus_marital": {"mode": "s6", "extras": ["ncb_years", "marital_status"]},
+    "plus_occupation": {"mode": "s6", "extras": ["ncb_years", "occupation"]},
+    "plus_prior_claims": {"mode": "s6", "extras": ["ncb_years", "prior_claims_5y"]},
+    "plus_region": {"mode": "s6", "extras": ["ncb_years", "region"]},
+    "all_five": {"mode": "s6", "extras": ["ncb_years", "marital_status", "occupation", "prior_claims_5y", "region"]}
+  },
+  "baseline": "frozen_S6_motor_predictions_for_same_target_and_fold",
+  "settings": "frozen power-1.5 log-link Tweedie GLM, alpha=1, sqrt(exposure) rate weighting, training-only preprocessing",
+  "row_exclusion": "fixed-prediction score excluding the entire F2023 policy row containing the 11.89M accepted motor bodily-injury claim; primary fit and score retain it; F2024 has no such row",
+  "selection": "primary F2023 first, F2024 as challenge; no automatic final-model promotion",
+  "limitations": [
+    "Customer and address dimensions have no historical version timestamps; prior_claims_5y as-of timing is unverified and cannot be selected as a quote-time feature without further evidence.",
+    "The single end-2024 valuation and conditional monetary-IBNR bridge do not establish realised ultimate outcomes.",
+    "2025 D2 is unavailable without 2025 realised ultimate labels."
+  ]
+}
