@@ -1,0 +1,3 @@
+metric,formula,tweedie_power,evaluation_period,value,percentage,interpretation
+Tweedie deviance explained (D2),"1 - model deviance / null-model deviance",1.5,2023 validation,0.11345157013436835,11.345157013436835,"The model explains about 11.35% of the null-model deviance; higher is better."
+Tweedie deviance explained (D2),"1 - model deviance / null-model deviance",1.5,2024 challenge,0.08980138282838457,8.980138282838457,"The model explains about 8.98% of the null-model deviance; higher is better."
