@@ -1,0 +1,26 @@
+{
+  "config_id": "step6-feature-blocks-v1",
+  "baseline_model": "B3_compact_tweedie_glm",
+  "settings_frozen_from": "step5-baselines-v1",
+  "selection_fold": "F2023",
+  "challenge_fold": "F2024",
+  "retain_rule": "lower held-out mean Tweedie deviance on the same line rows; no minimum effect asserted",
+  "blocks": {
+    "motor": {
+      "age_nonlinearity": {"source": ["driver_age", "years_licensed"], "timing": "policy_start", "status": "eligible"},
+      "vehicle_mileage": {"source": ["annual_mileage", "vehicle_age"], "timing": "policy_start", "status": "eligible"},
+      "ordinary_missingness": {"source": ["annual_mileage", "vehicle_age", "engine_size_cc"], "timing": "policy_start", "status": "eligible"}
+    },
+    "buildings": {
+      "log_sum_insured": {"source": ["sum_insured_repaired"], "timing": "policy_start", "status": "eligible_pending_adoption"},
+      "occupancy_security": {"source": ["days_unoccupied", "smoke_alarms", "accidental_damage_cover"], "timing": "policy_start", "status": "eligible"},
+      "construction_interaction": {"source": ["construction_type_standardized", "occupancy"], "timing": "policy_start", "status": "eligible"}
+    },
+    "contents": {
+      "log_sum_insured": {"source": ["sum_insured_repaired"], "timing": "policy_start", "status": "eligible_pending_adoption"},
+      "household_use": {"source": ["works_from_home", "lodgers", "bicycle_cover"], "timing": "policy_start", "status": "eligible"},
+      "security_value": {"source": ["security_level", "high_value_items"], "timing": "policy_start", "status": "eligible"}
+    }
+  },
+  "excluded": ["telematics_score", "weather_year", "customer_service_contacts", "renewal_decision", "same-period claims", "raw IDs", "current monetary history"]
+}

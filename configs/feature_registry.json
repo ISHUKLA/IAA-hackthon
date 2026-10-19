@@ -5,5 +5,14 @@
   "conditional":{"telematics_score":"measurement window unknown","weather_year":"whole-year availability unknown"},
   "excluded":["row_id","policy_id","customer_id","address_id","customer_id_raw","customer_id_clean","renewal_decision","customer_service_contacts","observed_claim_count","observed_incurred","observed_recoveries","observed_net_incurred","exposure","exposure_raw","exposure_clean","period_start","period_end","source_file","split","weather_join_status","customer_join_status","address_join_status"],
   "history":"No monetary or final-status claim history. A count may be visible only when report_date is before period_start on a date-only boundary.",
-  "target_encoding":"disabled"
+  "target_encoding":"disabled",
+  "step6_decision": {
+    "retained": {
+      "motor": ["age_nonlinearity", "ordinary_missingness"],
+      "buildings": ["log_sum_insured", "occupancy_security"],
+      "contents": ["log_sum_insured", "household_use", "security_value"]
+    },
+    "rejected_no_main_fold_improvement": ["motor.vehicle_mileage", "buildings.construction_interaction"],
+    "conditional_unavailable": ["telematics_score", "whole_year_weather", "monetary_history", "final_status_history"]
+  }
 }

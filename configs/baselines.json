@@ -1,0 +1,15 @@
+{
+  "config_id": "step5-baselines-v1",
+  "response_version": "repaired_observed_net_incurred_snapshot_2024-12-31",
+  "experiment_mode": "retrospective_snapshot_proxy",
+  "folds": ["F2023", "F2024"],
+  "primary_fold": "F2023",
+  "challenge_fold": "F2024",
+  "models": ["B0_global_mean", "B1_line_exposure_rate", "B2_line_premium_ratio", "B3_compact_tweedie_glm"],
+  "glm": {"power": 1.5, "link": "log", "alpha": 1.0, "max_iter": 100, "tol": 1e-5, "solver": "newton-cholesky", "seed": 20261019},
+  "rate_formulation": {"target": "observed_net_incurred / exposure_clean", "training_weight": "sqrt(exposure_clean)", "prediction": "annual_rate * exposure_clean"},
+  "scoring": "pooled unweighted policy-period Tweedie D2 power 1.5; provisional",
+  "premium_basis": "supplied written premium; conditional business comparator, not a technical feature",
+  "pipeline_check": "B1 fitted on repaired 2021-2024 observed snapshot proxy; not a final forecast",
+  "pending": ["ultimate target", "monetary IBNR", "future recoveries", "financial basis", "deduplication adoption", "exposure adoption"]
+}
