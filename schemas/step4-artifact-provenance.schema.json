@@ -1,0 +1,1 @@
+{"$schema":"https://json-schema.org/draft/2020-12/schema","type":"object","required":["artifact_id","input_hashes","config_id","response_version","experiment_mode"],"properties":{"artifact_id":{"type":"string"},"input_hashes":{"type":"object"},"config_id":{"type":"string"},"response_version":{"type":"string"},"experiment_mode":{"const":"retrospective_snapshot_proxy"}}}

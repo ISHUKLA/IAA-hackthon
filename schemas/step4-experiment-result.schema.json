@@ -1,0 +1,1 @@
+{"$schema":"https://json-schema.org/draft/2020-12/schema","type":"object","required":["run_id","fold_id","response_version","prediction_unit","experiment_mode"],"properties":{"run_id":{"type":"string"},"fold_id":{"enum":["F2022","F2023","F2024"]},"response_version":{"type":"string"},"prediction_unit":{"type":"string"},"experiment_mode":{"const":"retrospective_snapshot_proxy"}}}

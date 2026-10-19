@@ -1,0 +1,9 @@
+{
+  "registry_id":"step4-feature-registry-v1",
+  "mode":"retrospective_snapshot_proxy",
+  "core":["line","period_start","period_end","driver_age","years_licensed","ncb_years","vehicle_value_group","vehicle_age","make_model","body_type","fuel_type","cover_type","annual_mileage","overnight_parking","vehicle_use","telematics_opt_in","voluntary_excess","compulsory_excess","channel","payment_method","missed_payments_12m","new_business","renewal_count","days_quote_to_inception","discount_applied","written_premium","policyholder_age","sum_insured_repaired","construction_type_standardized","occupancy","days_unoccupied","smoke_alarms_missing_flag","tenure","security_level","high_value_items","works_from_home","lodgers","bicycle_cover"],
+  "conditional":{"telematics_score":"measurement window unknown","weather_year":"whole-year availability unknown"},
+  "excluded":["row_id","policy_id","customer_id","address_id","customer_id_raw","customer_id_clean","renewal_decision","customer_service_contacts","observed_claim_count","observed_incurred","observed_recoveries","observed_net_incurred","exposure","exposure_raw","exposure_clean","period_start","period_end","source_file","split","weather_join_status","customer_join_status","address_join_status"],
+  "history":"No monetary or final-status claim history. A count may be visible only when report_date is before period_start on a date-only boundary.",
+  "target_encoding":"disabled"
+}

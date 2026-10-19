@@ -22,9 +22,15 @@ def main() -> int:
     for name in required:
         if not (ROOT / name).is_file():
             errors.append(f"Missing scaffold file: {name}")
-    for number in range(8):
-        if len(list((ROOT / "prompts").glob(f"{number:02d}-*.md"))) != 1:
-            errors.append(f"Expected exactly one prompt numbered {number:02d}")
+    # The original Step 0/1 prompts remain the scaffold contract. Later
+    # versioned prompt sets may coexist without being mistaken for replacements.
+    for name in (
+        "00-scaffold.md", "01-sources.md", "02-data-inventory.md",
+        "03-prediction-contract.md", "04-metric.md", "05-submission-contract.md",
+        "06-challenge.md", "07-handoff.md",
+    ):
+        if not (ROOT / "prompts" / name).is_file():
+            errors.append(f"Missing scaffold prompt: {name}")
     try:
         config = json.loads((ROOT / "configs/project.json").read_text())
         manifest = json.loads((ROOT / "docs/evidence/expected-manifest.json").read_text())

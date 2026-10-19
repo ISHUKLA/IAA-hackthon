@@ -1,0 +1,3 @@
+Work inside the existing repository. Read current AGENTS.md and prior acceptance documents. Preserve unrelated changes; raw data/bundles are read-only; no models, predictions, commit, push or submission.
+
+Create a versioned explicit feature allowlist with timing, source, status and assumptions. Exclude responses, claims, scenarios, IDs, renewal decision and contacts. Keep weather/dynamic snapshots conditional, use report-date history boundaries and prohibit historical monetary histories. Provide training-only transform interfaces and tests against response contamination and validation-only changes. Next: S4-03.

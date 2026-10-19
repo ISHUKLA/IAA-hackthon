@@ -1,0 +1,1 @@
+{"$schema":"https://json-schema.org/draft/2020-12/schema","type":"object","required":["fold_id","row_id","role","period_year","input_identity"],"properties":{"fold_id":{"enum":["F2022","F2023","F2024"]},"row_id":{"type":"string"},"role":{"enum":["train","validation","excluded"]},"period_year":{"type":"integer"},"input_identity":{"type":"string"}}}

@@ -1,0 +1,18 @@
+{
+  "config_id": "step4-validation-v1",
+  "unit": "policy-period row_id",
+  "experiment_mode": "retrospective_snapshot_proxy",
+  "financial_valuation_date": "2024-12-31",
+  "input_universe": {
+    "policy_bundle": "outputs/step2/repairs",
+    "claim_universe": "deduplicated exact-non-claim-id candidate",
+    "response_view": "outputs/step3/after-step2-diagnostics/policy_observed_baseline.parquet",
+    "response_version": "observed_net_incurred_gross_of_recorded_recoveries_provisional",
+    "status": "provisional; raw-claim Step 3 scenarios/reporting fits are incompatible and blocked"
+  },
+  "folds": [{"id":"F2022","train_years":[2021],"validation_year":2022,"prediction_boundary":"2021-12-31","role":"optional_robustness"},{"id":"F2023","train_years":[2021,2022],"validation_year":2023,"prediction_boundary":"2022-12-31","role":"primary"},{"id":"F2024","train_years":[2021,2022,2023],"validation_year":2024,"prediction_boundary":"2023-12-31","role":"challenge"}],
+  "feature_cutoff": "period_start_date_only",
+  "reporting_fit_population": "blocked_pending_repaired_fold_safe_claim_view",
+  "scoring": {"metric":"Tweedie D2 power 1.5","pooling":"provisional pooled unweighted policy-period","official_implementation":"unverified"},
+  "pending": ["financial basis","ACT/365 adoption","sum-insured adoption","deduplication adoption","monetary IBNR","future recoveries","historical financial snapshots"]
+}
