@@ -35,3 +35,18 @@ dist/
 .coverage
 htmlcov/
 .DS_Store
+
+# Explicitly versioned competition input copies (Git LFS)
+!data/public/
+!data/public/manifest.json
+!data/public/weather.parquet
+!data/public/test_motor.parquet
+!data/public/test_contents.parquet
+!data/public/test_buildings.parquet
+!data/public/sample_submission.parquet
+!data/public/policies_motor.parquet
+!data/public/policies_contents.parquet
+!data/public/policies_buildings.parquet
+!data/public/customers.parquet
+!data/public/claims.parquet
+!data/public/addresses.parquet

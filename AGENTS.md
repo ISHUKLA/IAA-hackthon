@@ -38,3 +38,8 @@ Never commit raw data, row-level outputs, credentials, archives or local environ
 Update docs/status.md, docs/assumptions.md and PROMPT_LOGS.md as appropriate. Human approval fields stay pending until a human actually approves. An AI review is an AI review.
 
 Finish each prompt with: what changed; evidence and command results; unresolved items; and the next prompt number. Do not represent scaffold checks as Step 1 completion.
+
+
+## Explicit source-data publication exception — 22 October 2026
+
+The user explicitly authorized the 11 original competition Parquet inputs listed in data/public/manifest.json to be versioned through Git LFS under data/public/. This is the sole exception to the earlier no-raw-data-in-Git rule. Preserve these bytes and source attribution; keep all other raw files, derived row-level outputs, fitted models and local settings outside Git.

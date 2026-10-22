@@ -221,3 +221,8 @@ The latest recorded run passed 186 tests, verified the frozen candidate and repr
 The next action is not an automatic Step 11. A human reviewer must verify the current competition rules and make the target, financial-basis, repair, model and upload decisions listed in the [unchecked checklist](docs/part1/human-review-checklist.md). Any methodological change returns to the responsible earlier step and requires a new Step 9 candidate.
 
 > Data preparation determines what the records mean; EDA investigates what they contain; feature engineering creates eligible predictors; modelling estimates risk; model choice selects among candidates; guardrails prevent invalid conclusions; AI supports every stage; and results document what was actually achieved.
+
+
+## Original competition inputs
+
+The 11 supplied competition inputs are available through Git LFS in data/public/. See [data/README.md](data/README.md) for source attribution, terms, checksums and download instructions. Set IAA_DATA_DIR to data/public when using this checkout. Derived tables and model artifacts remain local outputs.

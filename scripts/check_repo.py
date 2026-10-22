@@ -31,6 +31,7 @@ def main() -> int:
     ):
         if not (ROOT / "prompts" / name).is_file():
             errors.append(f"Missing scaffold prompt: {name}")
+    allowed_source_paths: set[str] = set()
     try:
         config = json.loads((ROOT / "configs/project.json").read_text())
         manifest = json.loads((ROOT / "docs/evidence/expected-manifest.json").read_text())
@@ -38,6 +39,9 @@ def main() -> int:
             errors.append("Project file list and audit manifest differ")
         if config["expected_test_rows"] != 626639 or config["metric_power"] != 1.5:
             errors.append("Project metadata contradicts the verified competition contract")
+        # Explicit user-authorized source-data copies. Other inputs and all
+        # generated row-level outputs remain prohibited in the index.
+        allowed_source_paths = {f"data/public/{name}" for name in config["expected_files"]}
     except (OSError, ValueError, KeyError, TypeError) as exc:
         errors.append(f"Invalid project metadata: {exc}")
 
@@ -54,12 +58,20 @@ def main() -> int:
             name = encoded.decode("utf-8")
             path = Path(name)
             synthetic_csv = name.startswith("tests/fixtures/synthetic/") and path.suffix == ".csv"
-            if path.suffix.lower() in banned and not synthetic_csv:
+            source_input = name in allowed_source_paths
+            if path.suffix.lower() in banned and not synthetic_csv and not source_input:
                 errors.append(f"Prohibited tracked data/output file: {name}")
             if path.name.startswith(".env") or name.startswith("configs/local"):
                 errors.append(f"Prohibited tracked local configuration: {name}")
-            if name.startswith(("data/", "outputs/")) and path.name != "README.md":
+            if (name.startswith(("data/", "outputs/")) and path.name != "README.md"
+                    and not source_input and name != "data/public/manifest.json"):
                 errors.append(f"Prohibited tracked working file: {name}")
+            if source_input:
+                pointer = subprocess.check_output(
+                    ["git", "-C", str(ROOT), "show", f":{name}"], text=True,
+                )
+                if not pointer.startswith("version https://git-lfs.github.com/spec/v1\n"):
+                    errors.append(f"Source input must use Git LFS: {name}")
         print("Git index policy: checked")
     else:
         print("Git index policy: not checked; initialize Git in this directory before committing")
