@@ -1,0 +1,17 @@
+{
+  "experiment": "buildings-level-v1",
+  "parent_dir": "outputs/home-catboost-retune-v1",
+  "parent_manifest_sha256": "328a9383e2ab7a5e344165e45b41460a13491da0a468ba719d72a11719b5ca71",
+  "parent_csv_sha256": "49479916c660cec323fdc52a471b1c42347ea8e90ffc7bb338b611ff4b4166a7",
+  "prediction_column": "home_catboost_buildings_lgbm",
+  "folds": ["F2023", "F2024"],
+  "training_exposure_column": "exposure_clean",
+  "credibility": 0.5,
+  "upper_cap": 1.05,
+  "expected_rows": 626639,
+  "line_prefixes": {
+    "motor": "M",
+    "buildings": "B",
+    "contents": "C"
+  }
+}
